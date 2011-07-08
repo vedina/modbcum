@@ -30,7 +30,6 @@
 package net.idea.modbcum.c;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -57,7 +56,7 @@ public class DatasourceFactory {
         return DatasourceFactoryHolder.instance;
     }
     
-    public static synchronized DataSource getDataSource(String connectURI) throws AmbitException {
+    public static synchronized DataSource getDataSource(String connectURI) throws Exception {
         if (connectURI == null) throw new AmbitException("Connection URI not specified!");
         
         IDataSourcePool ds = getInstance().datasources.get(connectURI);
@@ -93,18 +92,19 @@ public class DatasourceFactory {
     	 */        
   	
     }
-    public static Connection getConnection(String connectURI) throws AmbitException {
+    public static Connection getConnection(String connectURI) throws Exception {
         try {
             Connection connection = getDataSource(connectURI).getConnection();
             if (connection.isClosed()) 
             	return getDataSource(connectURI).getConnection();
             else
             	return connection;
-        } catch (SQLException x) {
-            throw new AmbitException(x);
+        } catch (Exception x) {
+        	//do smth 
+            throw x;
         }
     }    
-    public static synchronized IDataSourcePool setupDataSource(String connectURI) throws AmbitException {
+    public static synchronized IDataSourcePool setupDataSource(String connectURI) throws Exception {
         try {
         	//IDataSourcePool dataSource = new DataSourceAndPool(connectURI);
         	//IDataSourcePool dataSource = new DataSourceBoneCP(connectURI);
@@ -112,7 +112,7 @@ public class DatasourceFactory {
             
             return dataSource;
         } catch (Exception x) {
-            throw new AmbitException(x);
+            throw x;
         }
     }
     /**
