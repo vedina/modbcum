@@ -1,0 +1,13 @@
+1. Build
+> mvn clean package
+
+2. Use as Maven dependency
+
+<dependency>
+  <groupId>net.idea</groupId>
+  <artifactId>modbcum-*</artifactId>
+</dependency>
+
+3. Generating site and documentation. Follow staging a site instructions at
+
+http://maven.apache.org/plugins/maven-site-plugin/usage.html

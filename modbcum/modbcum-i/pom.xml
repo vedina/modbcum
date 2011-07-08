@@ -10,4 +10,13 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>modbcum interfaces</name>
   <description>Interfaces</description>
+  <dependencies>
+  	<dependency>
+  		<groupId>net.idea</groupId>
+  		<artifactId>modbcum-l</artifactId>
+  		<version>${project.version}</version>
+  		<type>jar</type>
+  		<scope>compile</scope>
+  	</dependency>
+  </dependencies>
 </project>

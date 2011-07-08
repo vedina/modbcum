@@ -6,18 +6,15 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <groupId>net.idea</groupId>
-  <artifactId>modbcum-p</artifactId>
+  <artifactId>modbcum-l</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>modbcum processors</name>
-  <description>Processors</description>
+  <name>modbcum logging</name>
+  <description>Logging</description>
   <dependencies>
-  	<dependency>
-  		<groupId>net.idea</groupId>
-  		<artifactId>modbcum-i</artifactId>
-  		<version>${project.version}</version>
-  		<type>jar</type>
-  		<scope>compile</scope>
-  	</dependency>
+      <dependency>
+    	<groupId>log4j</groupId>
+    	<artifactId>log4j</artifactId>
+    	<version>1.2.14</version>
+    </dependency>
   </dependencies>
- 
 </project>

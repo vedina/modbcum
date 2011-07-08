@@ -8,11 +8,14 @@
   <packaging>pom</packaging>
 
   <name>modbcum</name>
-  <description>Light streaming DB access</description>
+  <description>Light streaming DB access.
+Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</description>
   <url>https://github.com/vedina/modbcum</url>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	<junit.version>4.8.1</junit.version>
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <issueManagement>
@@ -20,15 +23,15 @@
   	<url>https://github.com/vedina/modbcum/issues</url>
   </issueManagement>
   <scm>
-  	<connection>https://vedina@github.com/vedina/modbcum.git</connection>
-  	<developerConnection>git@github.com:vedina/modbcum.git</developerConnection>
-  	<url>git://github.com/vedina/modbcum.git</url>
+  	<connection>scm:git:https://vedina@github.com/vedina/modbcum.git</connection>
+  	<developerConnection>scm:git:git@github.com:vedina/modbcum.git</developerConnection>
+  	<url>scm:git:git://github.com/vedina/modbcum.git</url>
   </scm>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.8</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -61,5 +64,196 @@
   	<module>modbcum-p</module>
   	<module>modbcum-r</module>
   	<module>modbcum-q</module>
+  	<module>modbcum-c</module>
+  	<module>modbcum-l</module>
   </modules>
+   <distributionManagement>
+
+    <snapshotRepository>
+  		<id>ambit-plovdiv-snapshots</id>
+  		<url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/snapshots</url>
+	 </snapshotRepository>
+	<repository>
+        <id>ambit-plovdiv-releases</id>
+        <url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/releases</url>
+    </repository>
+
+    <site>
+      <id>website_ambit</id>
+      <url>scp://shell.sourceforge.net/home/groups/a/am/ambit/htdocs/AMBIT2-LIBS</url>
+    </site>
+ 	
+  </distributionManagement>
+  
+   <inceptionYear>2005</inceptionYear>
+   <licenses>
+  <license>
+    <name>LGPL3</name>
+    <url>http://www.gnu.org/licenses/lgpl.html</url>
+    <distribution>repo</distribution>
+    <comments>LGPL 3</comments>
+  </license>
+</licenses>
+ <reporting>
+    <plugins>
+<!-- 
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jxr-maven-plugin</artifactId>
+      </plugin>
+-->      
+      <!-- 
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+      </plugin>
+     <plugin>
+        <artifactId>maven-clover-plugin</artifactId>
+      </plugin>      
+	-->             
+          <plugin>
+          <!-- UML class diagrams  -->
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+			<version>2.7</version>            
+             <!-- <docletPath>/path/to/UmlGraph.jar</docletPath> -->
+	        <configuration>
+	          <source>1.5</source>
+	          <aggregate>false</aggregate>
+	          <doclet>gr.spinellis.umlgraph.doclet.UmlGraphDoc</doclet>
+	          <docletArtifact>
+	            <groupId>gr.spinellis</groupId>
+	            <artifactId>UmlGraph</artifactId>
+	            <version>4.6</version>
+	          </docletArtifact>
+	          <additionalparam>
+	          <!--  http://www.umlgraph.org/doc/cd-opt.html 
+	          	-attributes
+	          	-views
+	          	-types 
+	            -inferrel -inferdep -quiet -hide java.*
+	            -collpackages java.util.* -qualify
+	            -postfixpackage 
+	            --> 
+	            -all
+	          </additionalparam>
+	    
+	        </configuration>
+          
+         </plugin>
+         <!-- 
+		<plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-project-info-reports-plugin</artifactId>
+ 			<version>2.1</version> 		    
+		    <configuration>
+		      <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+		    </configuration>
+		  </plugin>
+		   -->          
+         <!-- 
+          <plugin>
+          	<groupId>org.apache.maven.plugins</groupId>
+          	<artifactId>maven-pmd-plugin</artifactId>
+          	<version>2.4</version>
+			<configuration>
+				<linkXref>false</linkXref>
+				<sourceEncoding>utf-8</sourceEncoding>
+				<minimumTokens>100</minimumTokens>
+				<targetJdk>
+					1.5
+				</targetJdk>
+				<excludes>
+					<exclude>*/generated/.java</exclude>
+				</excludes>
+			</configuration>          	
+          </plugin>
+           -->
+           
+          <!-- 
+          <plugin>
+          	<groupId>org.codehaus.mojo</groupId>
+          	<artifactId>taglist-maven-plugin</artifactId>
+			<configuration>
+				<tags>
+					<tag>TODO</tag>
+					<tag>@todo</tag>
+					<tag>FIXME</tag>
+					<tag>XXX</tag>
+				</tags>
+			</configuration>          	
+          </plugin>
+          -->
+          <plugin>
+          	<groupId>org.codehaus.mojo</groupId>
+          	<artifactId>jdepend-maven-plugin</artifactId>
+          	<version>2.0-beta-2</version>
+          </plugin>
+          <!-- 
+          <plugin>
+          	<groupId>org.codehaus.mojo</groupId>
+          	<artifactId>cobertura-maven-plugin</artifactId>
+          </plugin>
+           -->
+          <!-- Develop our own rules or follow foreign ones ...
+          <plugin>
+          	<groupId>org.apache.maven.plugins</groupId>
+          	<artifactId>maven-checkstyle-plugin</artifactId>
+          	<configuration>
+				<configLocation>config/maven_checks.xml</configLocation>
+			</configuration>
+          </plugin>
+           -->
+         <!-- needs svn executable  
+ 	  <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changelog-plugin</artifactId>
+      </plugin>
+ 	
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+
+          <aggregate>true</aggregate>
+        </configuration>
+      </plugin>
+ 	  -->
+    </plugins>
+
+    
+  </reporting>
+<profiles>
+	<profile>
+		<id>development</id>
+		<build>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+					<debug>true</debug>
+					<optimize>false</optimize>
+					</configuration>
+				</plugin>
+			</plugins>
+		</build>
+	</profile>
+	<profile>
+		<id>production</id>
+		<build>
+			<plugins>
+				<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+				<debug>false</debug>
+				<optimize>true</optimize>
+				</configuration>
+				</plugin>
+			</plugins>
+		</build>
+	</profile>
+</profiles>
+
+  
 </project>
