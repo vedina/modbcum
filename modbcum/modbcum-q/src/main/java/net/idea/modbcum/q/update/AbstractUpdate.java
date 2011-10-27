@@ -29,6 +29,8 @@
 
 package net.idea.modbcum.q.update;
 
+import net.idea.modbcum.i.query.IQueryUpdate;
+
 public abstract class AbstractUpdate<Group,Target>  implements IQueryUpdate<Group,Target> {
 	protected Target object;
 	protected Group group;
