@@ -11,7 +11,6 @@ import net.idea.modbcum.p.AbstractDBProcessor;
 import net.idea.modbcum.p.DbReader;
 import net.idea.modbcum.p.batch.AbstractBatchProcessor;
 
-
 public abstract class QueryAbstractReporter<T,Q extends IQueryRetrieval<T>,Output>  extends AbstractDBProcessor<Q,Output> implements Reporter<Q,Output>  {
 
 	/**
@@ -25,7 +24,14 @@ public abstract class QueryAbstractReporter<T,Q extends IQueryRetrieval<T>,Outpu
 	protected boolean autoCommit = true;
 	protected long timeout = 0;
 	protected AbstractBatchProcessor batch;
+	protected String licenseURI;
 	
+	public String getLicenseURI() {
+		return licenseURI;
+	}
+	public void setLicenseURI(String licenseURI) {
+		this.licenseURI = licenseURI;
+	}
 	public abstract void header(Output output, Q query);
 	public abstract void footer(Output output, Q query);
 	
