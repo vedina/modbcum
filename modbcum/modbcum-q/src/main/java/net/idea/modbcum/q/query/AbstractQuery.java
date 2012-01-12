@@ -1,5 +1,6 @@
 package net.idea.modbcum.q.query;
 
+import net.idea.modbcum.i.IParameterizedQuery;
 import net.idea.modbcum.i.IQueryCondition;
 import net.idea.modbcum.i.IQueryObject;
 import net.idea.modbcum.i.config.Preferences;
@@ -15,7 +16,7 @@ import net.idea.modbcum.i.exceptions.AmbitException;
  * @author Nina Jeliazkova nina@acad.bg
  * <b>Modified</b> Aug 10, 2008
  */
-public abstract class AbstractQuery<F,T,C extends IQueryCondition,ResultType> implements IQueryObject<ResultType> {
+public abstract class AbstractQuery<F,T,C extends IQueryCondition,ResultType> implements IQueryObject<ResultType>,IParameterizedQuery<F,T,C> {
 	/**
 	 * 
 	 */
