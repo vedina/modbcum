@@ -41,4 +41,5 @@ public interface Reporter<Content, Output> extends IProcessor<Content, Output> {
 	void setTimeout(long timeout);	
 	String getLicenseURI();
 	void setLicenseURI(String uri);		
+	String getFileExtension();
 }

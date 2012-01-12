@@ -25,7 +25,7 @@ public abstract class AbstractRepresentationConvertor<Item,Content,Output,R,Medi
 	 */
 	private static final long serialVersionUID = 3205584753771251514L;	
 	protected ItemReporter reporter;
-	
+	protected final String fileNamePrefix;
 	protected Media mediaType;
 	
 	public Media getMediaType() {
@@ -43,11 +43,15 @@ public abstract class AbstractRepresentationConvertor<Item,Content,Output,R,Medi
 		this.reporter = reporter;
 	}
 	public AbstractRepresentationConvertor(ItemReporter reporter) {
-		this.reporter = reporter;
+		this(reporter,null,null);
 	}
 	public AbstractRepresentationConvertor(ItemReporter reporter,Media media) {
-		this(reporter);
+		this(reporter,media,null);
+	}
+	public AbstractRepresentationConvertor(ItemReporter reporter,Media media,String fileNamePrefix) {
+		setReporter(reporter);
 		setMediaType(media);
+		this.fileNamePrefix = fileNamePrefix;
 	}
 
 	public abstract R process(Content query) throws AmbitException;

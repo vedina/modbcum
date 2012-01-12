@@ -34,6 +34,9 @@ public abstract class AbstractReporter<Content, Output> extends DefaultAmbitProc
 		
 	}
 	
-
+	@Override
+	public String getFileExtension() {
+		return null;
+	}
 
 }
