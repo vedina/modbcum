@@ -33,6 +33,7 @@ import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -114,6 +115,12 @@ public abstract class StatementExecutor<Q extends IStatement,Results> extends Ab
 					else					
 						ps.setString(i+1, params.get(i).getValue().toString());
 				} else
+				if (Timestamp.class.equals(clazz)) {
+						if (params.get(i).getValue()==null)
+							ps.setNull(i+1, Types.TIMESTAMP);
+						else					
+							ps.setTimestamp(i+1, (Timestamp)params.get(i).getValue());
+				} else					
 				if (Boolean.class.equals(clazz)) {
 					if (params.get(i).getValue()==null)
 						ps.setNull(i+1, Types.BOOLEAN);
