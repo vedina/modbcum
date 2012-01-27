@@ -29,6 +29,7 @@
 
 package net.idea.modbcum.p;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,6 +37,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import net.idea.modbcum.i.IStoredProcStatement;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.modbcum.i.query.QueryParam;
@@ -80,6 +82,9 @@ public class UpdateExecutor<Q extends IQueryUpdate> extends StatementExecutor<Q,
 				setParameters(statement, params);
 					logger.debug(statement);
 					count += statement.executeUpdate();
+					if(target instanceof IStoredProcStatement) {
+						((IStoredProcStatement)target).getStoredProcedureOutVars((CallableStatement)statement);
+					}
 					if (target.returnKeys(i)) {
 						//TODO if on duplicate is used two generated keys are returned!  http://bugs.mysql.com/bug.php?id=42309
 						ResultSet keys = statement.getGeneratedKeys();
