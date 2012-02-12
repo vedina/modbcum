@@ -22,10 +22,10 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
   	<system>GitHub</system>
   	<url>https://github.com/vedina/modbcum/issues</url>
   </issueManagement>
-  <scm>
+ <scm>
   	<connection>scm:git:https://vedina@github.com/vedina/modbcum.git</connection>
   	<developerConnection>scm:git:git@github.com:vedina/modbcum.git</developerConnection>
-  	<url>https://vedina.@github.com/vedina/vedina/modbcum.git</url>
+  	<url>https://vedina.@github.com/vedina/modbcum</url>
   </scm>
   <dependencies>
     <dependency>
