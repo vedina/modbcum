@@ -51,7 +51,7 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
                 </execution>
             </executions>
         </plugin>
-
+<!--
 	 <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
@@ -66,7 +66,7 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
           </execution>
             </executions>
         </plugin>
-    
+    -->
 	</plugins>
   	<pluginManagement>
 <plugins>
