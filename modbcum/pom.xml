@@ -25,7 +25,7 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
   <scm>
   	<connection>scm:git:https://vedina@github.com/vedina/modbcum.git</connection>
   	<developerConnection>scm:git:git@github.com:vedina/modbcum.git</developerConnection>
-  	<url>scm:git:git://github.com/vedina/modbcum.git</url>
+  	<url>https://vedina.@github.com/vedina/vedina/modbcum.git</url>
   </scm>
   <dependencies>
     <dependency>
