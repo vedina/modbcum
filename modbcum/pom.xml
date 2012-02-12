@@ -62,7 +62,6 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
             	<phase>verify</phase>
             	<goals>
               	<goal>jar-no-fork</goal>
-		<goal>test-jar-no-fork</goal>
             	</goals>
           </execution>
             </executions>
