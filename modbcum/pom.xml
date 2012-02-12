@@ -10,6 +10,11 @@
   <name>modbcum</name>
   <description>Light streaming DB access.
 Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</description>
+ <scm>
+  	<connection>scm:git:https://vedina@github.com/vedina/modbcum.git</connection>
+  	<developerConnection>scm:git:git@github.com:vedina/modbcum.git</developerConnection>
+  	<url>https://vedina.@github.com/vedina/modbcum</url>
+  </scm>
   <url>https://github.com/vedina/modbcum</url>
 
   <properties>
@@ -22,11 +27,6 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
   	<system>GitHub</system>
   	<url>https://github.com/vedina/modbcum/issues</url>
   </issueManagement>
- <scm>
-  	<connection>scm:git:https://vedina@github.com/vedina/modbcum.git</connection>
-  	<developerConnection>scm:git:git@github.com:vedina/modbcum.git</developerConnection>
-  	<url>https://vedina.@github.com/vedina/modbcum</url>
-  </scm>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -35,6 +35,10 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <organization>
+  	<name>IdeaConsult Ltd.</name>
+  	<url>http://www.ideaconsult.net</url>
+  </organization>
   <build>
   <plugins>
       <plugin>
