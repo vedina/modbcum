@@ -11,14 +11,13 @@
   <description>Light streaming DB access.
 Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</description>
  <scm>
-  	<connection>scm:git:https://vedina@github.com/vedina/modbcum.git</connection>
+  	<connection>scm:git:git://github.com/vedina/modbcum.git</connection>
   	<developerConnection>scm:git:git@github.com:vedina/modbcum.git</developerConnection>
   	<url>https://vedina.@github.com/vedina/modbcum</url>
   </scm>
   <url>https://github.com/vedina/modbcum</url>
 
   <properties>
-  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	<junit.version>4.8.1</junit.version>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -86,6 +85,37 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
         		<argLine>-Xmx1024m</argLine>
 				</configuration>
 			</plugin>
+		<plugin>
+	      <groupId>org.codehaus.mojo</groupId>
+     	 	<artifactId>buildnumber-maven-plugin</artifactId>
+      		<version>1.0-beta-4</version>
+    		</plugin>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-source-plugin</artifactId>
+	            
+	        <executions>
+	          <execution>
+	            <id>attach-sources</id>
+	            <phase>verify</phase>
+	            <goals>
+	              <goal>jar</goal>
+	            </goals>
+
+	          </execution>
+	        </executions>
+	      </plugin>				
+			<plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-release-plugin</artifactId>
+                <version>2.2</version>
+               <configuration>
+                     <releaseProfiles>release</releaseProfiles>
+               		<remoteTagging>true</remoteTagging>
+                   <autoVersionSubmodules>true</autoVersionSubmodules>
+<!--               		<preparationGoals>clean install</preparationGoals> -->  
+               </configuration>
+            </plugin>
 		</plugins>
 	</pluginManagement>	
   </build>
@@ -107,15 +137,29 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
         <id>ambit-plovdiv-releases</id>
         <url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/releases</url>
     </repository>
-
+<!-- 
     <site>
       <id>website_ambit</id>
       <url>scp://shell.sourceforge.net/home/groups/a/am/ambit/htdocs/AMBIT2-LIBS</url>
     </site>
+     -->
  	
   </distributionManagement>
   
    <inceptionYear>2005</inceptionYear>
+     <developers>
+  	<developer>
+  		<id>vedina</id>
+  		<name>Nina Jeliazkova</name>
+  		<email>jeliazkova.nina@gmail.com</email>
+  		<url>https://github.com/vedina</url>
+  		<timezone>CEST</timezone>
+  		<roles>
+  			<role>System Architecture</role>
+  			<role>Java Developer</role>  		
+  		</roles>
+  	</developer>
+  </developers>
    <licenses>
   <license>
     <name>LGPL3</name>
