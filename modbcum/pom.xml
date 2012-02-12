@@ -90,21 +90,6 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
      	 	<artifactId>buildnumber-maven-plugin</artifactId>
       		<version>1.0-beta-4</version>
     		</plugin>
-	      <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-source-plugin</artifactId>
-	            
-	        <executions>
-	          <execution>
-	            <id>attach-sources</id>
-	            <phase>verify</phase>
-	            <goals>
-	              <goal>jar</goal>
-	            </goals>
-
-	          </execution>
-	        </executions>
-	      </plugin>				
 			<plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-release-plugin</artifactId>
