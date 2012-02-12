@@ -85,11 +85,6 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
         		<argLine>-Xmx1024m</argLine>
 				</configuration>
 			</plugin>
-		<plugin>
-	      <groupId>org.codehaus.mojo</groupId>
-     	 	<artifactId>buildnumber-maven-plugin</artifactId>
-      		<version>1.0-beta-4</version>
-    		</plugin>
 			<plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-release-plugin</artifactId>
@@ -155,20 +150,6 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
 </licenses>
  <reporting>
     <plugins>
-<!-- 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jxr-maven-plugin</artifactId>
-      </plugin>
--->      
-      <!-- 
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-      </plugin>
-     <plugin>
-        <artifactId>maven-clover-plugin</artifactId>
-      </plugin>      
-	-->             
           <plugin>
           <!-- UML class diagrams  -->
             <groupId>org.apache.maven.plugins</groupId>
@@ -199,84 +180,11 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
 	        </configuration>
           
          </plugin>
-         <!-- 
-		<plugin>
-		    <groupId>org.apache.maven.plugins</groupId>
-		    <artifactId>maven-project-info-reports-plugin</artifactId>
- 			<version>2.1</version> 		    
-		    <configuration>
-		      <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-		    </configuration>
-		  </plugin>
-		   -->          
-         <!-- 
-          <plugin>
-          	<groupId>org.apache.maven.plugins</groupId>
-          	<artifactId>maven-pmd-plugin</artifactId>
-          	<version>2.4</version>
-			<configuration>
-				<linkXref>false</linkXref>
-				<sourceEncoding>utf-8</sourceEncoding>
-				<minimumTokens>100</minimumTokens>
-				<targetJdk>
-					1.5
-				</targetJdk>
-				<excludes>
-					<exclude>*/generated/.java</exclude>
-				</excludes>
-			</configuration>          	
-          </plugin>
-           -->
-           
-          <!-- 
-          <plugin>
-          	<groupId>org.codehaus.mojo</groupId>
-          	<artifactId>taglist-maven-plugin</artifactId>
-			<configuration>
-				<tags>
-					<tag>TODO</tag>
-					<tag>@todo</tag>
-					<tag>FIXME</tag>
-					<tag>XXX</tag>
-				</tags>
-			</configuration>          	
-          </plugin>
-          -->
           <plugin>
           	<groupId>org.codehaus.mojo</groupId>
           	<artifactId>jdepend-maven-plugin</artifactId>
           	<version>2.0-beta-2</version>
           </plugin>
-          <!-- 
-          <plugin>
-          	<groupId>org.codehaus.mojo</groupId>
-          	<artifactId>cobertura-maven-plugin</artifactId>
-          </plugin>
-           -->
-          <!-- Develop our own rules or follow foreign ones ...
-          <plugin>
-          	<groupId>org.apache.maven.plugins</groupId>
-          	<artifactId>maven-checkstyle-plugin</artifactId>
-          	<configuration>
-				<configLocation>config/maven_checks.xml</configLocation>
-			</configuration>
-          </plugin>
-           -->
-         <!-- needs svn executable  
- 	  <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changelog-plugin</artifactId>
-      </plugin>
- 	
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-
-          <aggregate>true</aggregate>
-        </configuration>
-      </plugin>
- 	  -->
     </plugins>
 
     
