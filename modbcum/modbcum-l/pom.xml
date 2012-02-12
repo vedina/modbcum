@@ -3,11 +3,11 @@
   <parent>
     <artifactId>modbcum</artifactId>
     <groupId>net.idea</groupId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
   </parent>
   <groupId>net.idea</groupId>
   <artifactId>modbcum-l</artifactId>
-  <version>0.0.3-SNAPSHOT</version>
+  <version>0.0.2-SNAPSHOT</version>
   <name>modbcum logging</name>
   <description>Logging</description>
   <dependencies>
