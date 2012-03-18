@@ -1,6 +1,5 @@
 package net.idea.modbcum.r;
 
-import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.modbcum.p.DefaultAmbitProcessor;
 
@@ -20,10 +19,10 @@ public abstract class AbstractReporter<Content, Output> extends DefaultAmbitProc
 	protected Output output;
 	protected long timeout = 0;
 
-	public Output getOutput() throws AmbitException {
+	public Output getOutput() throws Exception {
 		return output;
 	}
-	public void setOutput(Output output) throws AmbitException {
+	public void setOutput(Output output) throws Exception {
 		this.output = output;
 	}
 	public long getTimeout() {

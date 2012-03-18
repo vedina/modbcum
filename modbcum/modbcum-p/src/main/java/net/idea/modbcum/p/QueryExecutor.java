@@ -66,7 +66,7 @@ public class QueryExecutor<Q extends IQueryObject> extends StatementExecutor<Q,R
 	}
 
 	
-	public synchronized ResultSet process(Q target) throws AmbitException {
+	public synchronized ResultSet process(Q target) throws Exception {
 
 		long now = System.currentTimeMillis();
 		Connection c = getConnection();		

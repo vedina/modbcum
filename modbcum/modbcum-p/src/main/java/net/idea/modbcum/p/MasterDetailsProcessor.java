@@ -43,7 +43,7 @@ public abstract class MasterDetailsProcessor<Master,Detail,C extends IQueryCondi
 	protected void configureQuery(Master target,IParameterizedQuery<Master,Detail,C> query) throws AmbitException { 
 		query.setFieldname(target);
 	}
-	public Master process(Master target) throws AmbitException {
+	public Master process(Master target) throws Exception {
 		
 		if (query instanceof IParameterizedQuery) {
 	        configureQuery(target,(IParameterizedQuery<Master,Detail,C>)query);

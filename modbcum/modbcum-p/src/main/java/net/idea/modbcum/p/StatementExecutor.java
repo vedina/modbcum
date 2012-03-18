@@ -134,7 +134,7 @@ public abstract class StatementExecutor<Q extends IStatement,Results> extends Ab
 	public void open() throws DbAmbitException {
 	}
 
-	public Results process(Q target) throws AmbitException {
+	public Results process(Q target) throws Exception {
 		Connection c = getConnection();		
 		if (c == null) throw new AmbitException("no connection");
 		try {

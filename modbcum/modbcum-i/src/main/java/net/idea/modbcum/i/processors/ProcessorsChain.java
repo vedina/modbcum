@@ -35,7 +35,7 @@ public class ProcessorsChain<Target, Result, P extends IProcessor> extends Array
 	}
 	
 
-	public Result process(Target object) throws AmbitException {
+	public Result process(Target object) throws Exception {
 		Object o = object;
 		for (int i=0; i < size(); i++) {
 			try {
@@ -45,9 +45,10 @@ public class ProcessorsChain<Target, Result, P extends IProcessor> extends Array
 		        postprocess(get(i),o);
 		    }    
 			} catch (Exception x) {
-				x.printStackTrace();
 				if (abortOnError)
-					throw new AmbitException(x);
+					throw x;
+				else 
+					x.printStackTrace();
 			}
 		}
 		try {

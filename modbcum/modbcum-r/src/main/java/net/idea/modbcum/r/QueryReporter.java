@@ -2,7 +2,6 @@ package net.idea.modbcum.r;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.batch.IBatchStatistics;
-import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.modbcum.i.processors.ProcessorsChain;
 import net.idea.modbcum.i.reporter.Reporter;
@@ -32,7 +31,8 @@ public abstract class QueryReporter<T,Q extends IQueryRetrieval<T>,Output>
 		super();
 		processors = new ProcessorsChain<T,IBatchStatistics,IProcessor>();
 		processors.add(new DefaultAmbitProcessor<T,T>() {
-			public T process(T target) throws AmbitException {
+			@Override
+			public T process(T target) throws Exception {
 				processItem(target);
 				return target;
 			};

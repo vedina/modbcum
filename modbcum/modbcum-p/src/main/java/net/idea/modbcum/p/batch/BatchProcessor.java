@@ -68,7 +68,7 @@ public abstract class BatchProcessor<INPUT,Target> extends DefaultAmbitProcessor
 		iterator.close();
 	}
 	*/	
-	public IBatchStatistics process(INPUT target) throws AmbitException {
+	public IBatchStatistics process(INPUT target) throws Exception {
 		try {
 			DefaultBatchStatistics stats = new DefaultBatchStatistics();
 			stats.setResultCaption("Read");

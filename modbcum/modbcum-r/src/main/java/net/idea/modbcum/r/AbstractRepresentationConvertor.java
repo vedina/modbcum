@@ -1,6 +1,5 @@
 package net.idea.modbcum.r;
 
-import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.modbcum.p.DefaultAmbitProcessor;
@@ -54,7 +53,7 @@ public abstract class AbstractRepresentationConvertor<Item,Content,Output,R,Medi
 		this.fileNamePrefix = fileNamePrefix;
 	}
 
-	public abstract R process(Content query) throws AmbitException;
+	public abstract R process(Content query) throws Exception;
 	
 	public void close() {}
 }

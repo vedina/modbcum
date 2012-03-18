@@ -25,10 +25,10 @@ public abstract class BatchReporter<Item,ItemList,Output>  extends DefaultAmbitP
 	protected BatchProcessor<ItemList, Item> batch;	
 	protected String licenseURI = null;
 	
-	public Output getOutput() throws AmbitException {
+	public Output getOutput() throws Exception {
 		return output;
 	}
-	public void setOutput(Output output) throws AmbitException {
+	public void setOutput(Output output) throws Exception {
 		this.output = output;
 	}
 	
@@ -55,7 +55,7 @@ public abstract class BatchReporter<Item,ItemList,Output>  extends DefaultAmbitP
 	public abstract void header(Output output, ItemList query);
 	public abstract void footer(Output output, ItemList query);
 	
-	public Output process(ItemList query) throws AmbitException {
+	public Output process(ItemList query) throws Exception {
 		output = getOutput();
 		header(output,null);
 

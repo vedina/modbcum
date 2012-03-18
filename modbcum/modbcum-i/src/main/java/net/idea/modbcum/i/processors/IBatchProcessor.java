@@ -7,7 +7,7 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 public interface IBatchProcessor<Target,ItemInput,Result> {
 	ProcessorsChain<ItemInput,Result,IProcessor> getProcessorChain();
 	void setProcessorChain(ProcessorsChain<ItemInput,Result,IProcessor> processor);
-	Iterator<ItemInput> getIterator(Target target) throws AmbitException;
+	Iterator<ItemInput> getIterator(Target target) throws Exception;
 	void beforeProcessing(Target target) throws AmbitException;
 	void afterProcessing(Target target,Iterator<ItemInput>  iterator) throws AmbitException;
 	Result getResult(Target target);

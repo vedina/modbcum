@@ -3,6 +3,7 @@ package net.idea.modbcum.r;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.batch.IBatchStatistics;
 import net.idea.modbcum.i.exceptions.AmbitException;
+import net.idea.modbcum.i.exceptions.BatchProcessingException;
 import net.idea.modbcum.i.exceptions.NotFoundException;
 import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.modbcum.i.processors.ProcessorsChain;
@@ -45,7 +46,7 @@ public abstract class QueryAbstractReporter<T,Q extends IQueryRetrieval<T>,Outpu
 	}
 
 
-	public abstract Object processItem(T item) throws AmbitException;
+	public abstract Object processItem(T item) throws Exception;
 	
 	public boolean isAutoCommit() {
 		return autoCommit;
@@ -73,10 +74,10 @@ public abstract class QueryAbstractReporter<T,Q extends IQueryRetrieval<T>,Outpu
 	public void setMaxRecords(int maxRecords) {
 		this.maxRecords = maxRecords;
 	}
-	public Output getOutput() throws AmbitException {
+	public Output getOutput() throws Exception {
 		return output;
 	}
-	public void setOutput(Output output) throws AmbitException {
+	public void setOutput(Output output) throws Exception {
 		this.output = output;
 	}
 	
@@ -93,30 +94,30 @@ public abstract class QueryAbstractReporter<T,Q extends IQueryRetrieval<T>,Outpu
 		super.setCloseConnection(closeConnection);
 		if (batch!=null) batch.setCloseConnection(closeConnection);
 	}
-	public Output process(Q query) throws AmbitException {
+	public Output process(Q query) throws Exception {
 		output = getOutput();
 		if (isShowHeader()) header(output,query);
 
 		batch = createBatch(query);
 		batch.setCloseConnection(closeConnection);
 		batch.setTimeout(getTimeout());
+		IBatchStatistics stats = null;
 		try {
 			if (connection != null) {
 				batch.setProcessorChain(processors);
 				batch.setConnection(connection);			
-				IBatchStatistics stats = batch.process(query);
+				stats = batch.process(query);
 				if (stats.getRecords(IBatchStatistics.RECORDS_STATS.RECORDS_READ)==0)
 					throw new NotFoundException(query.toString());
 				wrapup();
 			} 
 			return output;
-		} catch (AmbitException x) {
-			try { if (isAutoCommit()) connection.rollback(); } catch (Exception xx) {} 
-			throw x;
+
 		} catch (Exception x ) {
 			//TODO smth reasonable for java.io.IOException: An established connection was aborted by the software in your host machine
-			try { if (isAutoCommit()) connection.rollback(); } catch (Exception xx) {} 
-			throw new AmbitException(x);
+			try { if (isAutoCommit()) connection.rollback(); } catch (Exception xx) {}
+			if (stats != null) throw new BatchProcessingException(x,batch);
+			else throw x;
 			
 		} finally {
 			if (isShowFooter()) footer(output, query);

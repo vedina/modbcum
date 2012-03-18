@@ -31,11 +31,10 @@ package net.idea.modbcum.i.processors;
 
 import java.io.Serializable;
 
-import net.idea.modbcum.i.exceptions.AmbitException;
 
 public interface IProcessor<Target,Result> extends Serializable{
 
-    Result process(Target target) throws AmbitException ;
+    Result process(Target target) throws Exception ;
 	/**
 	 * 
 	 * @return true if enabled

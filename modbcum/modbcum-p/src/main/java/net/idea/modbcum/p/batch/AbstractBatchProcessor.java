@@ -88,7 +88,7 @@ public abstract class AbstractBatchProcessor<Target, ItemInput> extends
 		this.processor = processor;
 		
 	}
-	public IBatchStatistics process(Target target) throws AmbitException {
+	public IBatchStatistics process(Target target) throws Exception {
 		long started = System.currentTimeMillis();
 		beforeProcessing(target);
 		IBatchStatistics result = getResult(target);		
@@ -119,6 +119,7 @@ public abstract class AbstractBatchProcessor<Target, ItemInput> extends
 				} 
 			} catch (Exception x) {
 				x.printStackTrace();
+				System.out.println(getClass().getName());
 				onError(input, null, result, x);			
 				continue;
 			}				

@@ -106,8 +106,9 @@ public class DbReader<ResultType> extends AbstractBatchProcessor<IQueryRetrieval
 		}
 		}
 	}
-	public Iterator<ResultType> getIterator(final IQueryRetrieval<ResultType> query)
-			throws AmbitException {
+	
+	@Override
+	public Iterator<ResultType> getIterator(final IQueryRetrieval<ResultType> query) throws Exception {
 		executor = new QueryExecutor<IQueryObject<ResultType>>();
 
 		executor.setConnection(connection);
