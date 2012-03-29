@@ -147,7 +147,11 @@ public class DatasourceFactory {
             b.append("password").append(eqmark).append(password);
         }
         b.append(amark);
-        b.append("&useUnicode=true&characterEncoding=UTF8&characterSetResults=UTF-8");
+        b.append("&useUnicode=true&characterEncoding=UTF8&characterSetResults=UTF-8&dontTrackOpenResources=true"); 
+        //useUsageAdvisor=true"); 
+        //profileSQL=true");
+        //&dontTrackOpenResources=true
+
        // b.append("[validationQuery]=[SELECT 1]");
         return b.toString();
     }
