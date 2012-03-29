@@ -15,14 +15,7 @@ http://www.mchange.com/projects/c3p0/index.html#using_c3p0
          */
         datasource = new ComboPooledDataSource();  // create a new datasource object
      	datasource.setJdbcUrl(connectURI);
-    	//datasource.setUser("guest");				// set the username
-    	//datasource.setPassword("guest");	
-       
-    	/*
-		cpds.setMinPoolSize(5); 
-		cpds.setAcquireIncrement(5); 
-		cpds.setMaxPoolSize(20); 
-    	 */
+     	//datasource.setConnectionCustomizerClassName("net.idea.modbcum.c.VerboseConnectionCustomizer");
      	datasource.setMaxPoolSize(512); 
       
 
