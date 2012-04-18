@@ -147,7 +147,7 @@ public class DatasourceFactory {
             b.append("password").append(eqmark).append(password);
         }
         b.append(amark);
-        b.append("&useUnicode=true&characterEncoding=UTF8&characterSetResults=UTF-8&dontTrackOpenResources=true"); 
+        b.append("&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&dontTrackOpenResources=true"); 
         //useUsageAdvisor=true"); 
         //profileSQL=true");
         //&dontTrackOpenResources=true
