@@ -3,11 +3,11 @@
   <parent>
     <artifactId>modbcum</artifactId>
     <groupId>net.idea</groupId>
-    <version>0.0.3</version>
+    <version>0.0.4-SNAPSHOT</version>
   </parent>
   <groupId>net.idea</groupId>
   <artifactId>modbcum-c</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.4-SNAPSHOT</version>
   <name>modbcum connection</name>
   <description>Connection and connection pools</description>
  <dependencies>
