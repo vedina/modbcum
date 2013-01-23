@@ -81,11 +81,13 @@ public class UpdateExecutor<Q extends IQueryUpdate> extends StatementExecutor<Q,
 				}
 				setParameters(statement, params);
 					logger.debug(statement);
-					count += statement.executeUpdate();
-					if(target instanceof IStoredProcStatement) {
+					if (target instanceof IStoredProcStatement) {
+						((IStoredProcStatement)target).registerOutParameters((CallableStatement)statement);
+						count += statement.executeUpdate();
 						((IStoredProcStatement)target).getStoredProcedureOutVars((CallableStatement)statement);
 						if (count==0) count++;
-					}
+					} else 
+						count += statement.executeUpdate();
 					if (target.returnKeys(i)) {
 						//TODO if on duplicate is used two generated keys are returned!  http://bugs.mysql.com/bug.php?id=42309
 						ResultSet keys = statement.getGeneratedKeys();
