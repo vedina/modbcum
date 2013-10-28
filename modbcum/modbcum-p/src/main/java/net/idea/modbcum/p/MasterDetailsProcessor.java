@@ -36,10 +36,12 @@ public abstract class MasterDetailsProcessor<Master,Detail,C extends IQueryCondi
 	@Override
 	public void setConnection(Connection connection) throws DbAmbitException {
 		super.setConnection(connection);
-		if (exec==null) exec = new QueryExecutor<IQueryObject<Detail>>();
+		if (exec==null) exec = createQueryExecutor();
 		exec.setConnection(connection);
 	}
-
+	public QueryExecutor createQueryExecutor() {
+		return new QueryExecutor<IQueryObject<Detail>>();
+	}
 	protected void configureQuery(Master target,IParameterizedQuery<Master,Detail,C> query) throws AmbitException { 
 		query.setFieldname(target);
 	}

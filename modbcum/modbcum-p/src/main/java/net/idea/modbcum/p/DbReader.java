@@ -106,10 +106,12 @@ public class DbReader<ResultType> extends AbstractBatchProcessor<IQueryRetrieval
 		}
 		}
 	}
-	
+	public QueryExecutor createQueryExecutor() {
+		return new QueryExecutor<IQueryObject<ResultType>>();
+	}
 	@Override
 	public Iterator<ResultType> getIterator(final IQueryRetrieval<ResultType> query) throws Exception {
-		executor = new QueryExecutor<IQueryObject<ResultType>>();
+		executor = createQueryExecutor();
 
 		executor.setConnection(connection);
 		setResultSet(executor.process(query));
