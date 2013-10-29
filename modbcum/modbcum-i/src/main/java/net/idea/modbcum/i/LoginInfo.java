@@ -37,6 +37,7 @@ public class LoginInfo {
 	protected String database;
 	protected String user;
 	protected String password;
+	protected String driverName; //default
 	/**
 	 * 
 	 */
@@ -48,6 +49,7 @@ public class LoginInfo {
 		setDatabase(Preferences.getProperty(Preferences.DATABASE));
 		setPort(Preferences.getProperty(Preferences.PORT));
 		setUser(Preferences.getProperty(Preferences.USER));
+		setDriverClassName(Preferences.getProperty(Preferences.DRIVERNAME));
 	}
     public void setURI(URI uri) throws Exception {
         String driver = uri.getScheme();
@@ -103,6 +105,12 @@ public class LoginInfo {
 	public void setUser(String user) {
 		this.user = user;
 	}
+	public String getDriverClassName() {
+		return driverName;
+	}
+	public void setDriverClassName(String driverName) {
+		this.driverName = driverName;
+	}	
 	@Override
 	public String toString() {
 		return user;

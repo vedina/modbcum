@@ -56,12 +56,12 @@ public class DatasourceFactory {
         return DatasourceFactoryHolder.instance;
     }
     
-    public static synchronized DataSource getDataSource(String connectURI) throws Exception {
+    public static synchronized DataSource getDataSource(String connectURI,String driverName) throws Exception {
         if (connectURI == null) throw new AmbitException("Connection URI not specified!");
         
         IDataSourcePool ds = getInstance().datasources.get(connectURI);
         if (ds == null) {
-        	ds = setupDataSource(connectURI);
+        	ds = setupDataSource(connectURI,driverName);
         	IDataSourcePool oldds = getInstance().datasources.putIfAbsent(connectURI, ds);
             if (oldds != null) ds = oldds;
             
@@ -92,11 +92,11 @@ public class DatasourceFactory {
     	 */        
   	
     }
-    public static Connection getConnection(String connectURI) throws Exception {
+    public static Connection getConnection(String connectURI,String driverName) throws Exception {
         try {
-            Connection connection = getDataSource(connectURI).getConnection();
+            Connection connection = getDataSource(connectURI,driverName).getConnection();
             if (connection.isClosed()) 
-            	return getDataSource(connectURI).getConnection();
+            	return getDataSource(connectURI,driverName).getConnection();
             else
             	return connection;
         } catch (Exception x) {
@@ -104,17 +104,18 @@ public class DatasourceFactory {
             throw x;
         }
     }    
-    public static synchronized IDataSourcePool setupDataSource(String connectURI) throws Exception {
+    public static synchronized IDataSourcePool setupDataSource(String connectURI,String driverName) throws Exception {
         try {
         	//IDataSourcePool dataSource = new DataSourceAndPool(connectURI);
         	//IDataSourcePool dataSource = new DataSourceBoneCP(connectURI);
-        	IDataSourcePool dataSource = new DataSourceC3P0(connectURI);
+        	IDataSourcePool dataSource = new DataSourceC3P0(connectURI,driverName);
             
             return dataSource;
         } catch (Exception x) {
             throw x;
         }
     }
+
     /**
      * Assembles connection URI
      * @param scheme
@@ -179,7 +180,7 @@ public class DatasourceFactory {
 	                    li.getScheme(), li.getHostname(), li.getPort(), 
 	                    li.getDatabase(), li.getUser(), li.getPassword());    	    					
 	
-	        connection = DatasourceFactory.getConnection(dburi.toString());
+	        connection = DatasourceFactory.getConnection(dburi.toString(),li.getDriverClassName());
 	        st = connection.createStatement();
 	        st.execute("/*ping*/SELECT 1");
 	        return true;    

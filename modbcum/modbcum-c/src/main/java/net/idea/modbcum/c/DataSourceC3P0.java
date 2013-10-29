@@ -7,9 +7,9 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 public class DataSourceC3P0 implements IDataSourcePool {
 	protected volatile ComboPooledDataSource datasource;
 
-	public DataSourceC3P0(String connectURI)  throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
-         
+
+	public DataSourceC3P0(String connectURI, String driverName)  throws Exception {
+        Class.forName(driverName);
         /*
 http://www.mchange.com/projects/c3p0/index.html#using_c3p0 
          */

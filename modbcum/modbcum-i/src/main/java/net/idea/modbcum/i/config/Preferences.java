@@ -45,6 +45,7 @@ public class Preferences {
 	public static String USER="User";
 	public static String PASSWORD="Password";
 	public static String TIMEOUT="timeout";
+	public static String DRIVERNAME="DriverClassName";
 	
 	protected final static String filename="ambit2.pref";
 	protected static Properties props = null;
@@ -62,7 +63,7 @@ public class Preferences {
 		{MAXRECORDS,"Maximum number of records",2000,String.class,"Maximum number of records to be returned by a search query",false,VTAGS.Database},
 		{TIMEOUT,"Timeout for search results, ms",60000,String.class,"Timeout of search queries, in milliseconds ",false,VTAGS.Database},
 		{DEFAULT_DIR,"Default directory","",String.class,"This folder will appear as a default in the file open or file save dialogs",false,VTAGS.General},		
-
+		{DRIVERNAME,"JDBC driver","com.mysql.jdbc.Driver",String.class,"",false,VTAGS.Database}
 
 	};
 	
