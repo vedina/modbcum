@@ -27,12 +27,15 @@ public class QueryExecutor<Q extends IQueryObject> extends StatementExecutor<Q,R
 	private static final long serialVersionUID = 5821244671560506456L;
 	protected PreparedStatement sresults=null;
 	protected Statement statement=null;
-	protected boolean isCached = false;
+	protected boolean isCached;
 	//protected String limit = "%s limit %d";
 	protected String paged_limit = "%s limit %d,%d";
 	protected String LIMIT = "limit";
 	public QueryExecutor() {
-
+		this(false);
+	}
+	public QueryExecutor(boolean cacheStatements) {
+		setCache(cacheStatements);
 	}
 	public boolean isCache() {
 		return isCached;

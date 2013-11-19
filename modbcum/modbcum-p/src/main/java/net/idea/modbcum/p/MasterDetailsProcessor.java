@@ -40,7 +40,7 @@ public abstract class MasterDetailsProcessor<Master,Detail,C extends IQueryCondi
 		exec.setConnection(connection);
 	}
 	public QueryExecutor createQueryExecutor() {
-		return new QueryExecutor<IQueryObject<Detail>>();
+		return new QueryExecutor<IQueryObject<Detail>>(true);
 	}
 	protected void configureQuery(Master target,IParameterizedQuery<Master,Detail,C> query) throws AmbitException { 
 		query.setFieldname(target);
