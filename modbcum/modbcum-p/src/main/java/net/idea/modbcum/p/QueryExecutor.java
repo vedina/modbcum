@@ -27,7 +27,7 @@ public class QueryExecutor<Q extends IQueryObject> extends StatementExecutor<Q,R
 	private static final long serialVersionUID = 5821244671560506456L;
 	protected PreparedStatement sresults=null;
 	protected Statement statement=null;
-	protected boolean cache = false;
+	protected boolean isCached = false;
 	//protected String limit = "%s limit %d";
 	protected String paged_limit = "%s limit %d,%d";
 	protected String LIMIT = "limit";
@@ -35,11 +35,11 @@ public class QueryExecutor<Q extends IQueryObject> extends StatementExecutor<Q,R
 
 	}
 	public boolean isCache() {
-		return cache;
+		return isCached;
 	}
 
 	public void setCache(boolean cache) {
-		this.cache = cache;
+		this.isCached = isCached;
 	}
 	//ResultSet.TYPE_FORWARD_ONLY, ResultSet.TYPE_SCROLL_INSENSITIVE
 	protected int resultType =  ResultSet.TYPE_SCROLL_INSENSITIVE;
@@ -87,7 +87,7 @@ public class QueryExecutor<Q extends IQueryObject> extends StatementExecutor<Q,R
 					
 					if (sresults == null) {
 						sresults = c.prepareStatement(sql,getResultType(),getResultTypeConcurency());
-						if (cache)	addStatementToCache(sql,sresults);		
+						if (isCache())	addStatementToCache(sql,sresults);		
 					} else {
 						sresults.clearParameters();
 					}					
@@ -148,7 +148,7 @@ public class QueryExecutor<Q extends IQueryObject> extends StatementExecutor<Q,R
 	public void closeResults(ResultSet rs) throws SQLException {
 		if (rs != null) rs.close();
 		if (sresults != null) {
-			if (!cache)	sresults.close(); 
+			if (!isCache())	sresults.close(); 
 			sresults = null;
 		}
 		if (statement != null) statement.close();statement = null;		
