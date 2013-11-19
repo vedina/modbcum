@@ -39,7 +39,7 @@ public class QueryExecutor<Q extends IQueryObject> extends StatementExecutor<Q,R
 	}
 
 	public void setCache(boolean cache) {
-		this.isCached = isCached;
+		this.isCached = cache;
 	}
 	//ResultSet.TYPE_FORWARD_ONLY, ResultSet.TYPE_SCROLL_INSENSITIVE
 	protected int resultType =  ResultSet.TYPE_SCROLL_INSENSITIVE;
