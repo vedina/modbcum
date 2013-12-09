@@ -4,11 +4,11 @@
   <parent>
     <artifactId>modbcum</artifactId>
     <groupId>net.idea</groupId>
-    <version>0.0.6-SNAPSHOT</version>
+    <version>1.0.0</version>
   </parent>
   <groupId>net.idea</groupId>
   <artifactId>modbcum-r</artifactId>
-  <version>0.0.6-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>modbcum reporters</name>
   <description>Serialization of db query results</description>
   <dependencies>
