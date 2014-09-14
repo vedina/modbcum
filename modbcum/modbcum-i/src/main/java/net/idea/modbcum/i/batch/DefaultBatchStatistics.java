@@ -88,35 +88,20 @@ public class DefaultBatchStatistics extends Observable implements
     	} else return false;
     }
     public String toString() {
-       // if (!inProgress || isTimeToPrint(100)) {
             long t = getTimeElapsed();
             
-            StringBuffer b = new StringBuffer();
+            StringBuilder b = new StringBuilder();
             for (RECORDS_STATS stats : RECORDS_STATS.values()) {
 	            b.append(stats.toString());
 	            b.append(' ');
 	            b.append(Long.toString(getRecords(stats)));
 	            b.append(' ');	            
             }
-            /*
-            b.append(" records in ");
-            b.append(Long.toString(t));
-            b.append(" ms");
-            */
             if (getRecords(RECORDS_STATS.RECORDS_READ) > 0) {
-                b.append("(");
-                long s = t/getRecords(RECORDS_STATS.RECORDS_READ);
-                if (s > 1000) {
-		            b.append(s/1000);
-		            b.append(" s per record)");                	
-                } else {	
-		            b.append(s);
-		            b.append(" ms per record)");
-                }
+            	double s = ((double)t)/((double)getRecords(RECORDS_STATS.RECORDS_READ));
+            	b.append(String.format("(%f msec per record)",s));
             }
             return b.toString();
-       // }	
-       // else return blank;
     }
 	public String getResultCaption() {
 		return resultCaption;
