@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.logging.Level;
 
 import net.idea.modbcum.i.IQueryObject;
 import net.idea.modbcum.i.IQueryRetrieval;
@@ -96,7 +97,7 @@ public class QueryExecutor<Q extends IQueryObject> extends StatementExecutor<Q,R
 					}					
 
 					QueryExecutor.setParameters(sresults, params);
-					logger.debug(sresults);
+					logger.log(Level.FINE,sresults.toString());
 					sresults.setFetchDirection(ResultSet.FETCH_FORWARD);
 					sresults.setFetchSize(Integer.MIN_VALUE);
 					rs = sresults.executeQuery();
@@ -125,7 +126,7 @@ public class QueryExecutor<Q extends IQueryObject> extends StatementExecutor<Q,R
 		} else {
 			sresults = c.prepareStatement(sql);					
 			setParameters(sresults, params);
-			logger.debug(sresults);
+			logger.log(Level.FINEST,sresults.toString());
 			ResultSet rs = sresults.executeQuery();
 			return rs;
 		}

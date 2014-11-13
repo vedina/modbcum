@@ -31,9 +31,9 @@ package net.idea.modbcum.p;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.logging.Logger;
 
 import net.idea.modbcum.i.processors.IProcessor;
-import net.idea.modbcum.l.AmbitLogger;
 
 /**
  * Default (empty) implementation of {@link IProcessor}
@@ -46,7 +46,7 @@ public abstract  class DefaultAmbitProcessor<Target,Result> implements IProcesso
 	 */
 	private static final long serialVersionUID = -4959472085664049891L;
 	protected PropertyChangeSupport propertyChangeSupport = null;
-	protected static AmbitLogger logger = new AmbitLogger(DefaultAmbitProcessor.class);
+	protected Logger logger = Logger.getLogger(getClass().getName());
     protected boolean enabled=true;
     
     /**

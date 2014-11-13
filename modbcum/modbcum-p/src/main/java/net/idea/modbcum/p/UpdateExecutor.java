@@ -36,6 +36,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.logging.Level;
 
 import net.idea.modbcum.i.IStoredProcStatement;
 import net.idea.modbcum.i.exceptions.AmbitException;
@@ -80,7 +81,8 @@ public class UpdateExecutor<Q extends IQueryUpdate> extends StatementExecutor<Q,
 					statement.clearParameters();
 				}
 				setParameters(statement, params);
-					logger.debug(statement);
+					logger.log(Level.FINEST,statement.toString());
+					
 					if (target instanceof IStoredProcStatement) {
 						((IStoredProcStatement)target).registerOutParameters((CallableStatement)statement);
 						count += statement.executeUpdate();

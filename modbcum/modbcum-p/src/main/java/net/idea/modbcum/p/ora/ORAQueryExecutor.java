@@ -4,6 +4,7 @@ package net.idea.modbcum.p.ora;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.logging.Level;
 
 import net.idea.modbcum.i.IQueryObject;
 import net.idea.modbcum.i.exceptions.AmbitException;
@@ -62,7 +63,7 @@ public class ORAQueryExecutor<Q extends IQueryObject> extends QueryExecutor<Q> {
 					}					
 
 					QueryExecutor.setParameters(sresults, params);
-					logger.debug(sresults);
+					logger.log(Level.FINE,sresults.toString());
 					sresults.setFetchDirection(ResultSet.FETCH_FORWARD);
 					//errors in oracle
 					//sresults.setFetchSize(1);

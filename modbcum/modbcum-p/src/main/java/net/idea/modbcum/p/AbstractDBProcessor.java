@@ -26,6 +26,7 @@ package net.idea.modbcum.p;
 
 
 import java.sql.Connection;
+import java.util.logging.Level;
 
 import net.idea.modbcum.i.IDBProcessor;
 import net.idea.modbcum.i.exceptions.DbAmbitException;
@@ -37,7 +38,6 @@ public abstract class AbstractDBProcessor<Target,Result> extends DefaultAmbitPro
 	 * 
 	 */
 	private static final long serialVersionUID = 735962863075840837L;
-	protected static final AmbitLogger logger = new AmbitLogger(AbstractDBProcessor.class);
 	//protected SessionID sessionID = null;
 	protected Connection connection; 
 	protected boolean closeConnection = true;
@@ -63,7 +63,7 @@ public abstract class AbstractDBProcessor<Target,Result> extends DefaultAmbitPro
 		if ((this.connection != null) && (this.connection != connection) && isCloseConnection()) try {
 			close();
 		} catch (Exception x) {
-		    logger.error(x);      
+		    logger.log(Level.SEVERE,x.getMessage(),x);      
         }
 		this.connection = connection;
 	}

@@ -12,6 +12,7 @@ import net.idea.modbcum.p.AbstractDBProcessor;
 import net.idea.modbcum.p.DbReader;
 import net.idea.modbcum.p.batch.AbstractBatchProcessor;
 
+
 public abstract class QueryAbstractReporter<T,Q extends IQueryRetrieval<T>,Output>  extends AbstractDBProcessor<Q,Output> implements Reporter<Q,Output>  {
 
 	/**
