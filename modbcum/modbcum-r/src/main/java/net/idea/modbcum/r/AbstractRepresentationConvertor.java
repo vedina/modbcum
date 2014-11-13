@@ -4,7 +4,6 @@ import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.modbcum.p.DefaultAmbitProcessor;
 
-
 /**
  * An abstract {@link IProcessor} , converting between arbitrary Content and arbitrary Representation.
  * @author nina
@@ -26,6 +25,7 @@ public abstract class AbstractRepresentationConvertor<Item,Content,Output,R,Medi
 	protected ItemReporter reporter;
 	protected final String fileNamePrefix;
 	protected Media mediaType;
+	protected long startTime;
 	
 	public Media getMediaType() {
 		return mediaType;
@@ -37,6 +37,12 @@ public abstract class AbstractRepresentationConvertor<Item,Content,Output,R,Medi
 
 	public ItemReporter getReporter() {
 		return reporter;
+	}
+	public long getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
 	}
 	public void setReporter(ItemReporter reporter) {
 		this.reporter = reporter;
@@ -52,7 +58,7 @@ public abstract class AbstractRepresentationConvertor<Item,Content,Output,R,Medi
 		setMediaType(media);
 		this.fileNamePrefix = fileNamePrefix;
 	}
-
+	
 	public abstract R process(Content query) throws Exception;
 	
 	public void close() {}

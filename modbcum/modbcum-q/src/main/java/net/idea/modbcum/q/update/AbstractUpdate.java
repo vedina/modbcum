@@ -1,9 +1,8 @@
 /* AbstractUpdate.java
  * Author: nina
- * Date: Mar 31, 2009
- * Revision: 0.1 
+ * Date: Nov 14, 2014
  * 
- * Copyright (C) 2005-2009  Ideaconsult Ltd.
+ * Copyright (C) 2005-2014  Ideaconsult Ltd.
  * 
  * Contact: nina
  * 
@@ -29,9 +28,12 @@
 
 package net.idea.modbcum.q.update;
 
+import java.util.logging.Logger;
+
 import net.idea.modbcum.i.query.IQueryUpdate;
 
 public abstract class AbstractUpdate<Group,Target>  implements IQueryUpdate<Group,Target> {
+	protected static Logger logger = Logger.getLogger(AbstractUpdate.class.getName());
 	protected Target object;
 	protected Group group;
 	public Group getGroup() {
@@ -59,5 +61,10 @@ public abstract class AbstractUpdate<Group,Target>  implements IQueryUpdate<Grou
 	@Override
 	public boolean isStoredProcedure() {
 		return false;
+	}
+	
+	protected String truncate(String g,int length) {
+		if (g!=null && g.length()>length) return g.substring(0,length-1);
+		return g;
 	}
 }

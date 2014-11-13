@@ -31,6 +31,7 @@ package net.idea.modbcum.p.batch;
 
 import java.sql.Connection;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 import net.idea.modbcum.i.IDBProcessor;
 import net.idea.modbcum.i.batch.DefaultBatchStatistics;
@@ -41,7 +42,6 @@ import net.idea.modbcum.i.processors.IBatchProcessor;
 import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.modbcum.i.processors.ProcessorsChain;
 import net.idea.modbcum.p.AbstractDBProcessor;
-
 
 /**
  * 
@@ -94,6 +94,7 @@ public abstract class AbstractBatchProcessor<Target, ItemInput> extends
 		IBatchStatistics result = getResult(target);		
 		ProcessorsChain<ItemInput, IBatchStatistics,IProcessor> processor = getProcessorChain(); 
 		Iterator<ItemInput> i = getIterator(target);
+		logger.log(Level.FINE, "Processing started");
 		cancelled = false;
 		while (i.hasNext() && !cancelled) {
 			
@@ -118,8 +119,7 @@ public abstract class AbstractBatchProcessor<Target, ItemInput> extends
 					}
 				} 
 			} catch (Exception x) {
-				x.printStackTrace();
-				System.out.println(getClass().getName());
+				logger.log(Level.WARNING,x.getMessage(),x);
 				onError(input, null, result, x);			
 				continue;
 			}				
@@ -161,8 +161,9 @@ public abstract class AbstractBatchProcessor<Target, ItemInput> extends
 	public void open() throws Exception {
 		if (getProcessorChain()!=null)
 		for (IProcessor p : getProcessorChain())
-			if (p instanceof IDBProcessor)
+			if (p instanceof IDBProcessor) try {
 				((IDBProcessor)p).open();
+			} catch (Exception x) {}
 		
 	}
 	public void onError(ItemInput input, Object output,
@@ -186,16 +187,7 @@ public abstract class AbstractBatchProcessor<Target, ItemInput> extends
 		now = System.currentTimeMillis();
 		
 	}	
-	/*
-	@Override
-	public void setSession(SessionID sessionID) {
-		super.setSession(sessionID);
-		if (getProcessorChain() != null)
-		for (IProcessor p : getProcessorChain())
-			if (p instanceof IDBProcessor)
-				((IDBProcessor)p).setSession(sessionID);
-	}
-	*/
+
 	@Override
 	public void setConnection(Connection connection) throws DbAmbitException {
 		super.setConnection(connection);
@@ -206,14 +198,16 @@ public abstract class AbstractBatchProcessor<Target, ItemInput> extends
 
 		
 	}
-
 	@Override
 	public void close() throws Exception {
 		if (!closeConnection) { 
 			try {setConnection(null);} catch (Exception x) {}
 		}
 		else {
-			if (processor != null) 	processor.close();
+			if (processor != null) 	
+				for (IProcessor p : getProcessorChain())
+					if (p instanceof IDBProcessor)
+						try {((IDBProcessor)p).close();} catch (Exception x) {}
 			super.close();
 		}
 	}	
