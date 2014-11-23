@@ -4,11 +4,11 @@
   <parent>
     <artifactId>modbcum</artifactId>
     <groupId>net.idea</groupId>
-    <version>1.0.3</version>
+    <version>1.0.4-SNAPSHOT</version>
   </parent>
   <groupId>net.idea</groupId>
   <artifactId>modbcum-i</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4-SNAPSHOT</version>
   <name>modbcum interfaces</name>
   <description>Interfaces</description>
   <dependencies>
