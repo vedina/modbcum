@@ -1,6 +1,7 @@
 package net.idea.modbcum.q.facet;
 
 import net.idea.modbcum.i.facet.IFacet;
+import net.idea.modbcum.i.json.JSONUtils;
 
 public abstract class AbstractFacet<T> implements IFacet<T> {
 	/**
@@ -47,5 +48,18 @@ public abstract class AbstractFacet<T> implements IFacet<T> {
 	@Override
 	public String getTitle() {
 		return "Category";
+	}
+	@Override
+	public String toString() {
+		return String.format("%s (%d)",value==null?"":value.toString(),count);
+	}
+	public String toJSON(String uri,String subcategory) {
+		return String.format("\n\t{\n\t\"value\":%s,\n\t\"count\":%d,\n\t\"uri\":%s,\n\t\"subcategory\":%s,\t\"subcategoryuri\":%s\n\t}",
+			getValue()==null?null:JSONUtils.jsonQuote(JSONUtils.jsonEscape(getValue().toString())),
+			getCount(),
+			uri==null?null:JSONUtils.jsonQuote(JSONUtils.jsonEscape(uri)),
+			JSONUtils.jsonQuote(JSONUtils.jsonEscape(getSubcategoryTitle())),	
+			JSONUtils.jsonQuote(JSONUtils.jsonEscape(getSubCategoryURL(subcategory)))
+			);
 	}
 }
