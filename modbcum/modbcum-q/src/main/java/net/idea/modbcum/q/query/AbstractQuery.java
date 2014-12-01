@@ -1,5 +1,7 @@
 package net.idea.modbcum.q.query;
 
+import java.util.logging.Logger;
+
 import net.idea.modbcum.i.IParameterizedQuery;
 import net.idea.modbcum.i.IQueryCondition;
 import net.idea.modbcum.i.IQueryObject;
@@ -29,7 +31,7 @@ public abstract class AbstractQuery<F,T,C extends IQueryCondition,ResultType> im
 	protected Integer id=-1;
 	protected long maxRecords = 10000;
 	protected int page = 0;
-
+	protected static Logger logger = Logger.getLogger(AbstractQuery.class.getName());
 	public AbstractQuery() {
 		super();
 		try {
