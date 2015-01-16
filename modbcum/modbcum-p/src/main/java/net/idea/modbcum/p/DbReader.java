@@ -41,165 +41,191 @@ import net.idea.modbcum.i.batch.IBatchStatistics;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.p.batch.AbstractBatchProcessor;
 
-public class DbReader<ResultType> extends AbstractBatchProcessor<IQueryRetrieval<ResultType>, ResultType>
-								  implements IDBProcessor<IQueryRetrieval<ResultType>, IBatchStatistics>
-									{
-	protected enum cached_results {TRUE,FALSE,NOTCACHED};
-	protected ResultSet resultSet;
-	protected QueryExecutor<IQueryObject<ResultType>> executor;
-	protected boolean handlePrescreen = false;
-	public boolean isHandlePrescreen() {
-		return handlePrescreen;
-	}
-	public void setHandlePrescreen(boolean handlePrescreen) {
-		this.handlePrescreen = handlePrescreen;
-	}
-	/**
+public class DbReader<ResultType> extends AbstractBatchProcessor<IQueryRetrieval<ResultType>, ResultType> implements
+	IDBProcessor<IQueryRetrieval<ResultType>, IBatchStatistics> {
+    protected enum cached_results {
+	TRUE, FALSE, NOTCACHED
+    };
+
+    protected ResultSet resultSet;
+    protected QueryExecutor<IQueryObject<ResultType>> executor;
+    protected boolean handlePrescreen = false;
+
+    public boolean isHandlePrescreen() {
+	return handlePrescreen;
+    }
+
+    public void setHandlePrescreen(boolean handlePrescreen) {
+	this.handlePrescreen = handlePrescreen;
+    }
+
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = -509334177829567145L;
+    private static final long serialVersionUID = -509334177829567145L;
 
-	public DbReader() {
+    public DbReader() {
 
+    }
+
+    /**
+     * Returns cached query results or NOTCACHED if not in the cache. Default
+     * implementation returns NOTCACHED.
+     * 
+     * @param query
+     * @param object
+     * @return
+     */
+    protected cached_results getCached(String category, String key, ResultType object) {
+	return cached_results.NOTCACHED;
+    }
+
+    /**
+     * Does nothing, otherwise should cache the query result
+     * 
+     * @param query
+     * @param object
+     */
+    protected void cache(String category, String key, ResultType object, boolean ok) {
+
+    }
+
+    /**
+     * 
+     * @param query
+     * @param object
+     * @return
+     * @throws AmbitException
+     */
+    protected boolean prescreen(IQueryRetrieval<ResultType> query, ResultType object) throws AmbitException {
+	cached_results result = getCached(query.getCategory(), query.getKey(), object);
+	switch (result) {
+	case NOTCACHED: {
+	    boolean ok = query.calculateMetric(object) > 0;
+	    if (query.getKey() != null)
+		cache(query.getCategory(), query.getKey(), object, ok);
+	    return ok;
 	}
-	/**
-	 * Returns cached query results or NOTCACHED if not in the cache. Default implementation returns NOTCACHED.
-	 * @param query
-	 * @param object
-	 * @return
-	 */
-	protected cached_results getCached(String category,String key, ResultType object) {
-		return cached_results.NOTCACHED;
+	case TRUE: {
+	    return true;
 	}
-	/**
-	 * Does nothing, otherwise should cache the query result
-	 * @param query
-	 * @param object
-	 */
-	protected void cache(String category,String key, ResultType object,boolean ok) {
-
-	}	
-	/**
-	 * 
-	 * @param query
-	 * @param object
-	 * @return
-	 * @throws AmbitException
-	 */
-	protected boolean prescreen(IQueryRetrieval<ResultType> query, ResultType object) throws AmbitException {
-		cached_results result = getCached(query.getCategory(),query.getKey(),object);
-		switch (result) {
-		case NOTCACHED: {
-			boolean ok = query.calculateMetric(object)>0;
-			if (query.getKey()!=null)
-			cache(query.getCategory(),query.getKey(),object,ok);
-			return ok;
-		}
-		case TRUE: {
-			return true;
-		}
-		case FALSE: {
-			return false;
-		}
-		default: {
-			throw new AmbitException("Invalid "+result);
-		}
-		}
+	case FALSE: {
+	    return false;
 	}
-	public QueryExecutor createQueryExecutor() {
-		return new QueryExecutor<IQueryObject<ResultType>>();
+	default: {
+	    throw new AmbitException("Invalid " + result);
 	}
-	@Override
-	public Iterator<ResultType> getIterator(final IQueryRetrieval<ResultType> query) throws Exception {
-		executor = createQueryExecutor();
-
-		executor.setConnection(connection);
-		setResultSet(executor.process(query));
-		return new Iterator<ResultType>() {
-			protected long counter= 0;
-			protected ResultType cachedRecord = null;
-			
-			public boolean hasNext() {
-				try {
-					cachedRecord = null;
-					if (handlePrescreen && query.isPrescreen()) {
-						try {
-							
-							counter++;
-							long max = (query.getPageSize()>0)?query.getPageSize():1000000;
-							if (counter > max) return false;
-							boolean loop=getResultSet().next();
-							long attemptsStart = System.currentTimeMillis();
-							while (loop) {
-
-								cachedRecord = query.getObject(getResultSet());
-								if (prescreen(query, cachedRecord)) return loop;
-								else {
-									cachedRecord = null;
-									if ((System.currentTimeMillis() - attemptsStart)>60000) {
-										loop = false; 
-										break;
-									} else	loop=getResultSet().next();
-								}
-							}
-							return loop;
-						} catch (AmbitException x) {
-							Logger.getLogger(getClass().getName()).severe(x.getMessage());
-							return false;
-						}
-					} else
-						return getResultSet().next();
-				} catch (SQLException x) {
-					onError(null,null,batchStatistics,x);
-					return false;
-				}
-			}
-			public ResultType next() {
-				try {
-					return cachedRecord==null?query.getObject(getResultSet()):cachedRecord;
-				} catch (AmbitException x) {
-					onError(null,null,batchStatistics,x);
-					return null;
-				}
-			}
-			public void remove() {
-				onError(null,null,batchStatistics,new AmbitException("Undefined operation remove"));
-				
-			}
-		};
-			
-	};
-	@Override
-	public void beforeProcessing(IQueryRetrieval<ResultType> target)
-			throws AmbitException {
-		super.beforeProcessing(target);
-
 	}
-	@Override
-	public void afterProcessing(IQueryRetrieval<ResultType> target,
-			Iterator<ResultType> iterator) throws AmbitException {
-		
+    }
+
+    public QueryExecutor createQueryExecutor() {
+	return new QueryExecutor<IQueryObject<ResultType>>();
+    }
+
+    @Override
+    public Iterator<ResultType> getIterator(final IQueryRetrieval<ResultType> query) throws Exception {
+	executor = createQueryExecutor();
+
+	executor.setConnection(connection);
+	setResultSet(executor.process(query));
+	return new Iterator<ResultType>() {
+	    protected long counter = 0;
+	    protected ResultType cachedRecord = null;
+
+	    public boolean hasNext() {
 		try {
-			executor.closeResults(getResultSet());
-			resultSet = null;
+		    cachedRecord = null;
+		    if (handlePrescreen && query.isPrescreen()) {
+			try {
+
+			    counter++;
+			    long max = (query.getPageSize() > 0) ? query.getPageSize() : 1000000;
+			    if (counter > max)
+				return false;
+			    boolean loop = getResultSet().next();
+			    long attemptsStart = System.currentTimeMillis();
+			    while (loop) {
+
+				cachedRecord = query.getObject(getResultSet());
+				if (prescreen(query, cachedRecord))
+				    return loop;
+				else {
+				    cachedRecord = null;
+				    if ((System.currentTimeMillis() - attemptsStart) > 60000) {
+					loop = false;
+					break;
+				    } else
+					loop = getResultSet().next();
+				}
+			    }
+			    return loop;
+			} catch (AmbitException x) {
+			    Logger.getLogger(getClass().getName()).severe(x.getMessage());
+			    return false;
+			}
+		    } else
+			return getResultSet().next();
 		} catch (SQLException x) {
-
-			throw new AmbitException(x);
+		    onError(null, null, batchStatistics, x);
+		    return false;
 		}
-		super.afterProcessing(target,iterator);
-	}
-	
-	@Override
-	public void close() throws Exception {
-		try { if (resultSet!=null) {resultSet.close(); resultSet=null; }} catch (Exception x) {}
-		super.close();
-	}
-	protected ResultSet getResultSet() {
-		return resultSet;
-	}
-	public void setResultSet(ResultSet resultSet) {
-		this.resultSet = resultSet;
-	}
+	    }
 
+	    public ResultType next() {
+		try {
+		    return cachedRecord == null ? query.getObject(getResultSet()) : cachedRecord;
+		} catch (AmbitException x) {
+		    onError(null, null, batchStatistics, x);
+		    return null;
+		}
+	    }
+
+	    public void remove() {
+		onError(null, null, batchStatistics, new AmbitException("Undefined operation remove"));
+
+	    }
+	};
+
+    };
+
+    @Override
+    public void beforeProcessing(IQueryRetrieval<ResultType> target) throws AmbitException {
+	super.beforeProcessing(target);
+
+    }
+
+    @Override
+    public void afterProcessing(IQueryRetrieval<ResultType> target, Iterator<ResultType> iterator)
+	    throws AmbitException {
+
+	try {
+	    executor.closeResults(getResultSet());
+	    resultSet = null;
+	} catch (SQLException x) {
+
+	    throw new AmbitException(x);
+	}
+	super.afterProcessing(target, iterator);
+    }
+
+    @Override
+    public void close() throws Exception {
+	try {
+	    if (resultSet != null) {
+		resultSet.close();
+		resultSet = null;
+	    }
+	} catch (Exception x) {
+	}
+	super.close();
+    }
+
+    protected ResultSet getResultSet() {
+	return resultSet;
+    }
+
+    public void setResultSet(ResultSet resultSet) {
+	this.resultSet = resultSet;
+    }
 
 }

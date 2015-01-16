@@ -20,10 +20,9 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
-*/
+ */
 
 package net.idea.modbcum.p;
-
 
 import java.sql.Connection;
 import java.util.logging.Level;
@@ -32,57 +31,56 @@ import net.idea.modbcum.i.IDBProcessor;
 import net.idea.modbcum.i.exceptions.DbAmbitException;
 import net.idea.modbcum.l.AmbitLogger;
 
-public abstract class AbstractDBProcessor<Target,Result> extends DefaultAmbitProcessor<Target, Result> implements IDBProcessor<Target,Result>
-	/*, IRepositoryAccess*/ {
+public abstract class AbstractDBProcessor<Target, Result> extends DefaultAmbitProcessor<Target, Result> implements
+	IDBProcessor<Target, Result>
+/* , IRepositoryAccess */{
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = 735962863075840837L;
-	//protected SessionID sessionID = null;
-	protected Connection connection; 
-	protected boolean closeConnection = true;
-	
-	public boolean isCloseConnection() {
-		return closeConnection;
-	}
-	public void setCloseConnection(boolean closeConnection) {
-		this.closeConnection = closeConnection;
-	}
-	public boolean isEnabled() {
-		return enabled;
-	}
-    public AbstractDBProcessor() {
-        super();
+    private static final long serialVersionUID = 735962863075840837L;
+    // protected SessionID sessionID = null;
+    protected Connection connection;
+    protected boolean closeConnection = true;
+
+    public boolean isCloseConnection() {
+	return closeConnection;
     }
 
-	public Connection getConnection() {
-		return connection;
-	}
+    public void setCloseConnection(boolean closeConnection) {
+	this.closeConnection = closeConnection;
+    }
 
-	public void setConnection(Connection connection) throws DbAmbitException {
-		if ((this.connection != null) && (this.connection != connection) && isCloseConnection()) try {
-			close();
-		} catch (Exception x) {
-		    logger.log(Level.SEVERE,x.getMessage(),x);      
-        }
-		this.connection = connection;
-	}
-	
-	@Override
-	public void close() throws Exception {
-    		if ((connection != null) && (!connection.isClosed()) && isCloseConnection())
-    			connection.close();
-    		connection = null;
-	}
-	
-	/*
-	public SessionID getSession() {
-		return sessionID;
-	}
-	public void setSession(SessionID sessionID) {
-		this.sessionID = sessionID;
-	}
-	*/
+    public boolean isEnabled() {
+	return enabled;
+    }
+
+    public AbstractDBProcessor() {
+	super();
+    }
+
+    public Connection getConnection() {
+	return connection;
+    }
+
+    public void setConnection(Connection connection) throws DbAmbitException {
+	if ((this.connection != null) && (this.connection != connection) && isCloseConnection())
+	    try {
+		close();
+	    } catch (Exception x) {
+		logger.log(Level.SEVERE, x.getMessage(), x);
+	    }
+	this.connection = connection;
+    }
+
+    @Override
+    public void close() throws Exception {
+	if ((connection != null) && (!connection.isClosed()) && isCloseConnection())
+	    connection.close();
+	connection = null;
+    }
+
+    /*
+     * public SessionID getSession() { return sessionID; } public void
+     * setSession(SessionID sessionID) { this.sessionID = sessionID; }
+     */
 }
-
-

@@ -31,14 +31,20 @@ package net.idea.modbcum.i.reporter;
 
 import net.idea.modbcum.i.processors.IProcessor;
 
-
 public interface Reporter<Content, Output> extends IProcessor<Content, Output> {
-	Output getOutput() throws Exception;
-	void setOutput(Output output) throws Exception;
-	public void close() throws Exception;
-	long getTimeout();
-	void setTimeout(long timeout);	
-	String getLicenseURI();
-	void setLicenseURI(String uri);		
-	String getFileExtension();
+    Output getOutput() throws Exception;
+
+    void setOutput(Output output) throws Exception;
+
+    public void close() throws Exception;
+
+    long getTimeout();
+
+    void setTimeout(long timeout);
+
+    String getLicenseURI();
+
+    void setLicenseURI(String uri);
+
+    String getFileExtension();
 }

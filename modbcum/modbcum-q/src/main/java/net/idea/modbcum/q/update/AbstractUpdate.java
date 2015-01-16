@@ -32,39 +32,47 @@ import java.util.logging.Logger;
 
 import net.idea.modbcum.i.query.IQueryUpdate;
 
-public abstract class AbstractUpdate<Group,Target>  implements IQueryUpdate<Group,Target> {
-	protected static Logger logger = Logger.getLogger(AbstractUpdate.class.getName());
-	protected Target object;
-	protected Group group;
-	public Group getGroup() {
-		return group;
-	}
-	public void setGroup(Group group) {
-		this.group = group;
-	}
-	public AbstractUpdate(Target target) {
-		setObject(target);
-	}
-	public AbstractUpdate() {
-		this(null);
-	}	
-	public Target getObject() {
-		return object;
-	}
+public abstract class AbstractUpdate<Group, Target> implements IQueryUpdate<Group, Target> {
+    protected static Logger logger = Logger.getLogger(AbstractUpdate.class.getName());
+    protected Target object;
+    protected Group group;
 
-	public void setObject(Target object) {
-		this.object = object;
-	}
-	public boolean returnKeys(int index) {
-		return false;
-	}
-	@Override
-	public boolean isStoredProcedure() {
-		return false;
-	}
-	
-	protected String truncate(String g,int length) {
-		if (g!=null && g.length()>length) return g.substring(0,length-1);
-		return g;
-	}
+    public Group getGroup() {
+	return group;
+    }
+
+    public void setGroup(Group group) {
+	this.group = group;
+    }
+
+    public AbstractUpdate(Target target) {
+	setObject(target);
+    }
+
+    public AbstractUpdate() {
+	this(null);
+    }
+
+    public Target getObject() {
+	return object;
+    }
+
+    public void setObject(Target object) {
+	this.object = object;
+    }
+
+    public boolean returnKeys(int index) {
+	return false;
+    }
+
+    @Override
+    public boolean isStoredProcedure() {
+	return false;
+    }
+
+    protected String truncate(String g, int length) {
+	if (g != null && g.length() > length)
+	    return g.substring(0, length - 1);
+	return g;
+    }
 }

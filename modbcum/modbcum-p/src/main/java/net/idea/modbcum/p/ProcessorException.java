@@ -32,26 +32,29 @@ package net.idea.modbcum.p;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.processors.IProcessor;
 
-
 public class ProcessorException extends AmbitException {
-	protected IProcessor processor;
+    protected IProcessor processor;
     /**
      * 
      */
     private static final long serialVersionUID = 7644140308982655059L;
-    public ProcessorException(IProcessor processor,String message) {
-        super(message);
-        this.processor = processor;
+
+    public ProcessorException(IProcessor processor, String message) {
+	super(message);
+	this.processor = processor;
     }
-    public ProcessorException(IProcessor processor,Exception x) {
-        super(x);
-        this.processor = processor;
+
+    public ProcessorException(IProcessor processor, Exception x) {
+	super(x);
+	this.processor = processor;
     }
+
     @Override
     public String getMessage() {
-    	if (processor!= null)
-    		return "[" + processor.toString() + "]" + super.getMessage();
-    	else return super.getMessage();
+	if (processor != null)
+	    return "[" + processor.toString() + "]" + super.getMessage();
+	else
+	    return super.getMessage();
     }
-        
+
 }

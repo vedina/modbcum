@@ -31,24 +31,25 @@ package net.idea.modbcum.i.exceptions;
 
 /**
  * Thrown if there are no results from a query
+ * 
  * @author nina
- *
+ * 
  */
 public class NotFoundException extends AmbitException {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 7345257007414183299L;
-	public NotFoundException() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    private static final long serialVersionUID = 7345257007414183299L;
 
-	public NotFoundException(String arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
-	}
+    public NotFoundException() {
+	super();
+	// TODO Auto-generated constructor stub
+    }
 
+    public NotFoundException(String arg0) {
+	super(arg0);
+	// TODO Auto-generated constructor stub
+    }
 
 }

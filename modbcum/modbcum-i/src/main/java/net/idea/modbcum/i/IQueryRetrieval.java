@@ -29,11 +29,11 @@
 
 package net.idea.modbcum.i;
 
+public interface IQueryRetrieval<ResultType> extends IQueryObject<ResultType>, IRetrieval<ResultType> {
+    public static final String NaN = "NaN";
 
-public interface IQueryRetrieval<ResultType> extends IQueryObject<ResultType>,
-		IRetrieval<ResultType> {
-	public static final String NaN = "NaN";
-	boolean isPrescreen();
-	double calculateMetric(ResultType object);
-	
+    boolean isPrescreen();
+
+    double calculateMetric(ResultType object);
+
 }

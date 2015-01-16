@@ -38,35 +38,43 @@ import net.idea.modbcum.i.query.QueryParam;
 /**
  * 
  * Interface for a query
- * @author Nina Jeliazkova jeliazkova.nina@gmail.com
- * <b>Modified</b> May 7, 2008
+ * 
+ * @author Nina Jeliazkova jeliazkova.nina@gmail.com <b>Modified</b> May 7, 2008
  */
-public interface IQueryObject<ResultType> extends IStatement,Serializable {
-	/*
-	Element toXML();
-	void fromXML(Element node);
-	*/
-	String getSQL() throws AmbitException;
-	Integer getId();
-	void setId(Integer id);	
-	List<QueryParam> getParameters() throws AmbitException;	
+public interface IQueryObject<ResultType> extends IStatement, Serializable {
+    /*
+     * Element toXML(); void fromXML(Element node);
+     */
+    String getSQL() throws AmbitException;
 
-	int getPage();
-	void setPage(int page);
+    Integer getId();
 
-	long getPageSize();
-	void setPageSize(long records);
+    void setId(Integer id);
 
-	/**
-	 * Key to identify this query for caching purposes. 
-	 * @return
-	 */
-	String getKey();
-	/**
-	 * String to group caching results.
-	 * @return
-	 */
-	String getCategory();
-	boolean supportsPaging();
+    List<QueryParam> getParameters() throws AmbitException;
+
+    int getPage();
+
+    void setPage(int page);
+
+    long getPageSize();
+
+    void setPageSize(long records);
+
+    /**
+     * Key to identify this query for caching purposes.
+     * 
+     * @return
+     */
+    String getKey();
+
+    /**
+     * String to group caching results.
+     * 
+     * @return
+     */
+    String getCategory();
+
+    boolean supportsPaging();
 
 }

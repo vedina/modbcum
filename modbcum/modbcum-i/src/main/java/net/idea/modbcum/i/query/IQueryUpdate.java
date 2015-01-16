@@ -34,14 +34,22 @@ import java.util.List;
 import net.idea.modbcum.i.IStatement;
 import net.idea.modbcum.i.exceptions.AmbitException;
 
-public interface IQueryUpdate<Group,Target> extends IStatement {
-	String[] getSQL() throws AmbitException;	
-	Target getObject();
-	void setObject(Target object);
-	Group getGroup();
-	void setGroup(Group object);	
-	List<QueryParam> getParameters(int index) throws AmbitException;
-	void setID(int index, int id);
-	boolean returnKeys(int index);
-	boolean isStoredProcedure();
+public interface IQueryUpdate<Group, Target> extends IStatement {
+    String[] getSQL() throws AmbitException;
+
+    Target getObject();
+
+    void setObject(Target object);
+
+    Group getGroup();
+
+    void setGroup(Group object);
+
+    List<QueryParam> getParameters(int index) throws AmbitException;
+
+    void setID(int index, int id);
+
+    boolean returnKeys(int index);
+
+    boolean isStoredProcedure();
 }

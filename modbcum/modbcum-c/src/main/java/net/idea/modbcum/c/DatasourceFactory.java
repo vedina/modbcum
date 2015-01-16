@@ -39,160 +39,178 @@ import net.idea.modbcum.i.LoginInfo;
 import net.idea.modbcum.i.exceptions.AmbitException;
 
 public class DatasourceFactory {
-    protected static final String slash="/";
-    protected static final String qmark="?";
-    protected static final String colon=":";
-    protected static final String eqmark="=";
-    protected static final String amark="&";
+    protected static final String slash = "/";
+    protected static final String qmark = "?";
+    protected static final String colon = ":";
+    protected static final String eqmark = "=";
+    protected static final String amark = "&";
     protected ConcurrentHashMap<String, IDataSourcePool> datasources;
+
     private DatasourceFactory() {
-        datasources = new ConcurrentHashMap<String, IDataSourcePool>();
+	datasources = new ConcurrentHashMap<String, IDataSourcePool>();
     }
-    private static class DatasourceFactoryHolder { 
-        private final static DatasourceFactory instance = new DatasourceFactory();
-      }
-    
+
+    private static class DatasourceFactoryHolder {
+	private final static DatasourceFactory instance = new DatasourceFactory();
+    }
+
     public static synchronized DatasourceFactory getInstance() {
-        return DatasourceFactoryHolder.instance;
+	return DatasourceFactoryHolder.instance;
     }
-    
-    public static synchronized DataSource getDataSource(String connectURI,String driverName) throws Exception {
-        if (connectURI == null) throw new AmbitException("Connection URI not specified!");
-        
-        IDataSourcePool ds = getInstance().datasources.get(connectURI);
-        if (ds == null) {
-        	ds = setupDataSource(connectURI,driverName);
-        	IDataSourcePool oldds = getInstance().datasources.putIfAbsent(connectURI, ds);
-            if (oldds != null) ds = oldds;
-            
-            
-        }
-        if (ds!= null) return ds.getDatasource();
-        else return null;
+
+    public static synchronized DataSource getDataSource(String connectURI, String driverName) throws Exception {
+	if (connectURI == null)
+	    throw new AmbitException("Connection URI not specified!");
+
+	IDataSourcePool ds = getInstance().datasources.get(connectURI);
+	if (ds == null) {
+	    ds = setupDataSource(connectURI, driverName);
+	    IDataSourcePool oldds = getInstance().datasources.putIfAbsent(connectURI, ds);
+	    if (oldds != null)
+		ds = oldds;
+
+	}
+	if (ds != null)
+	    return ds.getDatasource();
+	else
+	    return null;
 
     }
+
     /**
      * Does nothing, the pool will be still active
+     * 
      * @param connectURI
      * @throws AmbitException
      */
     public static void logout(String connectURI) throws AmbitException {
-    	
-    	/*
 
-        if (connectURI == null) throw new AmbitException("Connection URI not specified!");
-        DataSourceAndPool dspool = getInstance().datasources.get(connectURI);
-        if (dspool != null) {
-            getInstance().datasources.remove(connectURI);
-            try {
-            	
-            } catch (Exception x) {x.printStackTrace();};
-        }
-    	 * 
-    	 */        
-  	
+	/*
+	 * 
+	 * if (connectURI == null) throw new
+	 * AmbitException("Connection URI not specified!"); DataSourceAndPool
+	 * dspool = getInstance().datasources.get(connectURI); if (dspool !=
+	 * null) { getInstance().datasources.remove(connectURI); try {
+	 * 
+	 * } catch (Exception x) {x.printStackTrace();}; }
+	 */
+
     }
-    public static Connection getConnection(String connectURI,String driverName) throws Exception {
-        try {
-            Connection connection = getDataSource(connectURI,driverName).getConnection();
-            if (connection.isClosed()) 
-            	return getDataSource(connectURI,driverName).getConnection();
-            else
-            	return connection;
-        } catch (Exception x) {
-        	//do smth 
-            throw x;
-        }
-    }    
-    public static synchronized IDataSourcePool setupDataSource(String connectURI,String driverName) throws Exception {
-        try {
-        	//IDataSourcePool dataSource = new DataSourceAndPool(connectURI);
-        	//IDataSourcePool dataSource = new DataSourceBoneCP(connectURI);
-        	IDataSourcePool dataSource = new DataSourceC3P0(connectURI,driverName);
-            
-            return dataSource;
-        } catch (Exception x) {
-            throw x;
-        }
+
+    public static Connection getConnection(String connectURI, String driverName) throws Exception {
+	try {
+	    Connection connection = getDataSource(connectURI, driverName).getConnection();
+	    if (connection.isClosed())
+		return getDataSource(connectURI, driverName).getConnection();
+	    else
+		return connection;
+	} catch (Exception x) {
+	    // do smth
+	    throw x;
+	}
+    }
+
+    public static synchronized IDataSourcePool setupDataSource(String connectURI, String driverName) throws Exception {
+	try {
+	    // IDataSourcePool dataSource = new DataSourceAndPool(connectURI);
+	    // IDataSourcePool dataSource = new DataSourceBoneCP(connectURI);
+	    IDataSourcePool dataSource = new DataSourceC3P0(connectURI, driverName);
+
+	    return dataSource;
+	} catch (Exception x) {
+	    throw x;
+	}
     }
 
     /**
      * Assembles connection URI
+     * 
      * @param scheme
      * @param hostname
      * @param port
      * @param database
      * @param user
      * @param password
-     * @return    scheme://{Hostname}:{Port}/{Database}?user={user}&password={password}
+     * @return 
+     *         scheme://{Hostname}:{Port}/{Database}?user={user}&password={password
+     *         }
      */
-    public static String getConnectionURI(String scheme,String hostname,String port,
-                String database,String user,String password) {
-        
-        StringBuilder b = new StringBuilder();
-        b.append(scheme).append(colon).
-        append(slash).append(slash);
-        
-        if (hostname==null) b.append("localhost");
-        else b.append(hostname);
-        if (port != null) b.append(colon).append(port);
-        b.append(slash).
-        append(database);
-        String q = qmark;
-        if (user != null) {
-            b.append(q); q = amark;
-            b.append("user").append(eqmark).append(user);
-        }
-        if (password != null) {
-            b.append(q); q = amark;            
-            b.append("password").append(eqmark).append(password);
-        }
-        b.append(amark);
-        b.append("&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&noAccessToProcedureBodies=true&dontTrackOpenResources=true"); 
-        //useUsageAdvisor=true"); 
-        //profileSQL=true");
-        //&dontTrackOpenResources=true
+    public static String getConnectionURI(String scheme, String hostname, String port, String database, String user,
+	    String password) {
 
-       // b.append("[validationQuery]=[SELECT 1]");
-        return b.toString();
+	StringBuilder b = new StringBuilder();
+	b.append(scheme).append(colon).append(slash).append(slash);
+
+	if (hostname == null)
+	    b.append("localhost");
+	else
+	    b.append(hostname);
+	if (port != null)
+	    b.append(colon).append(port);
+	b.append(slash).append(database);
+	String q = qmark;
+	if (user != null) {
+	    b.append(q);
+	    q = amark;
+	    b.append("user").append(eqmark).append(user);
+	}
+	if (password != null) {
+	    b.append(q);
+	    q = amark;
+	    b.append("password").append(eqmark).append(password);
+	}
+	b.append(amark);
+	b.append("&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&noAccessToProcedureBodies=true&dontTrackOpenResources=true");
+	// useUsageAdvisor=true");
+	// profileSQL=true");
+	// &dontTrackOpenResources=true
+
+	// b.append("[validationQuery]=[SELECT 1]");
+	return b.toString();
     }
+
     /**
      * 
      * @param scheme
      * @param hostname
      * @param port
      * @param database
-     * @return    scheme://{Hostname}:{Port}/{Database}
+     * @return scheme://{Hostname}:{Port}/{Database}
      */
-    public static String getConnectionURI(String scheme,String hostname,String port,
-            String database) {
-        return getConnectionURI(scheme, hostname, port, database,null,null);
-    }    
-    public static String getConnectionURI(String hostname,String port,
-            String database) {
-        return getConnectionURI("jdbc:mysql", hostname, port, database,null,null);
+    public static String getConnectionURI(String scheme, String hostname, String port, String database) {
+	return getConnectionURI(scheme, hostname, port, database, null, null);
     }
+
+    public static String getConnectionURI(String hostname, String port, String database) {
+	return getConnectionURI("jdbc:mysql", hostname, port, database, null, null);
+    }
+
     public static boolean ping(LoginInfo li) {
-    	Connection connection = null;
-    	Statement st = null;
-    	try {
-	        String dburi = DatasourceFactory.getConnectionURI(
-	                    li.getScheme(), li.getHostname(), li.getPort(), 
-	                    li.getDatabase(), li.getUser(), li.getPassword());    	    					
-	
-	        connection = DatasourceFactory.getConnection(dburi.toString(),li.getDriverClassName());
-	        st = connection.createStatement();
-	        st.execute("/*ping*/SELECT 1");
-	        return true;    
-    	} catch (Exception x) {
-    		return false;
-    	} finally {
-    		if (st != null) try {st.close();} catch (Exception x) {};
-            if (connection != null) try {connection.close();} catch (Exception x) {};
-    	}
+	Connection connection = null;
+	Statement st = null;
+	try {
+	    String dburi = DatasourceFactory.getConnectionURI(li.getScheme(), li.getHostname(), li.getPort(),
+		    li.getDatabase(), li.getUser(), li.getPassword());
+
+	    connection = DatasourceFactory.getConnection(dburi.toString(), li.getDriverClassName());
+	    st = connection.createStatement();
+	    st.execute("/*ping*/SELECT 1");
+	    return true;
+	} catch (Exception x) {
+	    return false;
+	} finally {
+	    if (st != null)
+		try {
+		    st.close();
+		} catch (Exception x) {
+		}
+	    ;
+	    if (connection != null)
+		try {
+		    connection.close();
+		} catch (Exception x) {
+		}
+	    ;
+	}
     }
 }
-
-
-
-

@@ -29,7 +29,6 @@
 
 package net.idea.modbcum.i;
 
-
 public interface IStatement {
-	
+
 }

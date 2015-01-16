@@ -20,34 +20,40 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
-*/
+ */
 
 package net.idea.modbcum.i.query;
 
 public class QueryParam<T> {
-	protected Class type;
-	protected T value;
-	public QueryParam(Class type, T value) {
-		setType(type);
-		setValue(value);
-	}
-	public Class getType() {
-		return type;
-	}
-	public void setType(Class type) {
-		this.type = type;
-	}
-	public T getValue() {
-		return value;
-	}
-	public void setValue(T value) {
-		this.value = value;
-	}
-	@Override
-	public String toString() {
-		if (value == null) return null;
-		else return value.toString();
-	}
+    protected Class type;
+    protected T value;
+
+    public QueryParam(Class type, T value) {
+	setType(type);
+	setValue(value);
+    }
+
+    public Class getType() {
+	return type;
+    }
+
+    public void setType(Class type) {
+	this.type = type;
+    }
+
+    public T getValue() {
+	return value;
+    }
+
+    public void setValue(T value) {
+	this.value = value;
+    }
+
+    @Override
+    public String toString() {
+	if (value == null)
+	    return null;
+	else
+	    return value.toString();
+    }
 }
-
-

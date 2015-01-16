@@ -29,12 +29,12 @@
 
 package net.idea.modbcum.q.update;
 
+public abstract class AbstractObjectUpdate<Target> extends AbstractUpdate<Object, Target> {
+    public AbstractObjectUpdate(Target target) {
+	setObject(target);
+    }
 
-public abstract class AbstractObjectUpdate<Target> extends AbstractUpdate<Object,Target> {
-	public AbstractObjectUpdate(Target target) {
-		setObject(target);
-	}
-	public AbstractObjectUpdate() {
-		this(null);
-	}	
+    public AbstractObjectUpdate() {
+	this(null);
+    }
 }

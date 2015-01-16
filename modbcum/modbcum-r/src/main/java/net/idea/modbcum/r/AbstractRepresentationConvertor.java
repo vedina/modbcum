@@ -5,9 +5,11 @@ import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.modbcum.p.DefaultAmbitProcessor;
 
 /**
- * An abstract {@link IProcessor} , converting between arbitrary Content and arbitrary Representation.
+ * An abstract {@link IProcessor} , converting between arbitrary Content and
+ * arbitrary Representation.
+ * 
  * @author nina
- *
+ * 
  * @param <Item>
  * @param <Content>
  * @param <Output>
@@ -15,51 +17,58 @@ import net.idea.modbcum.p.DefaultAmbitProcessor;
  * @param <Media>
  * @param <ItemReporter>
  */
-public abstract class AbstractRepresentationConvertor<Item,Content,Output,R,Media,ItemReporter extends Reporter<Content,Output>> 
-														extends DefaultAmbitProcessor<Content,R> {
+public abstract class AbstractRepresentationConvertor<Item, Content, Output, R, Media, ItemReporter extends Reporter<Content, Output>>
+	extends DefaultAmbitProcessor<Content, R> {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 3205584753771251514L;	
-	protected ItemReporter reporter;
-	protected final String fileNamePrefix;
-	protected Media mediaType;
-	protected long startTime;
-	
-	public Media getMediaType() {
-		return mediaType;
-	}
-	public void setMediaType(Media mediaType) {
-		this.mediaType = mediaType;
-	}
-	
+    private static final long serialVersionUID = 3205584753771251514L;
+    protected ItemReporter reporter;
+    protected final String fileNamePrefix;
+    protected Media mediaType;
+    protected long startTime;
 
-	public ItemReporter getReporter() {
-		return reporter;
-	}
-	public long getStartTime() {
-		return startTime;
-	}
-	public void setStartTime(long startTime) {
-		this.startTime = startTime;
-	}
-	public void setReporter(ItemReporter reporter) {
-		this.reporter = reporter;
-	}
-	public AbstractRepresentationConvertor(ItemReporter reporter) {
-		this(reporter,null,null);
-	}
-	public AbstractRepresentationConvertor(ItemReporter reporter,Media media) {
-		this(reporter,media,null);
-	}
-	public AbstractRepresentationConvertor(ItemReporter reporter,Media media,String fileNamePrefix) {
-		setReporter(reporter);
-		setMediaType(media);
-		this.fileNamePrefix = fileNamePrefix;
-	}
-	
-	public abstract R process(Content query) throws Exception;
-	
-	public void close() {}
+    public Media getMediaType() {
+	return mediaType;
+    }
+
+    public void setMediaType(Media mediaType) {
+	this.mediaType = mediaType;
+    }
+
+    public ItemReporter getReporter() {
+	return reporter;
+    }
+
+    public long getStartTime() {
+	return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+	this.startTime = startTime;
+    }
+
+    public void setReporter(ItemReporter reporter) {
+	this.reporter = reporter;
+    }
+
+    public AbstractRepresentationConvertor(ItemReporter reporter) {
+	this(reporter, null, null);
+    }
+
+    public AbstractRepresentationConvertor(ItemReporter reporter, Media media) {
+	this(reporter, media, null);
+    }
+
+    public AbstractRepresentationConvertor(ItemReporter reporter, Media media, String fileNamePrefix) {
+	setReporter(reporter);
+	setMediaType(media);
+	this.fileNamePrefix = fileNamePrefix;
+    }
+
+    public abstract R process(Content query) throws Exception;
+
+    public void close() {
+    }
 }

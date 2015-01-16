@@ -31,21 +31,26 @@ package net.idea.modbcum.i.processors;
 
 import java.io.Serializable;
 
+public interface IProcessor<Target, Result> extends Serializable {
 
-public interface IProcessor<Target,Result> extends Serializable{
+    Result process(Target target) throws Exception;
 
-    Result process(Target target) throws Exception ;
-	/**
-	 * 
-	 * @return true if enabled
-	 */
-	public boolean isEnabled();
-	/**
-	 * Enables/disables the processor
-	 * @param value
-	 */
-	public void setEnabled(boolean value);    
-	long getID();
-	void close() throws Exception ;
+    /**
+     * 
+     * @return true if enabled
+     */
+    public boolean isEnabled();
+
+    /**
+     * Enables/disables the processor
+     * 
+     * @param value
+     */
+    public void setEnabled(boolean value);
+
+    long getID();
+
+    void close() throws Exception;
+
     void open() throws Exception;
 }

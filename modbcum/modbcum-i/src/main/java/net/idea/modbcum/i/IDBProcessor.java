@@ -34,7 +34,11 @@ import java.sql.Connection;
 import net.idea.modbcum.i.exceptions.DbAmbitException;
 import net.idea.modbcum.i.processors.IProcessor;
 
-public interface IDBProcessor<Target,Result> extends IProcessor<Target,Result> /*, IRepositoryAccess*/ {
+public interface IDBProcessor<Target, Result> extends IProcessor<Target, Result> /*
+										  * ,
+										  * IRepositoryAccess
+										  */{
     Connection getConnection();
+
     void setConnection(Connection connection) throws DbAmbitException;
 }

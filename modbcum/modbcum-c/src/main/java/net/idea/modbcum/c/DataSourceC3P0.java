@@ -5,44 +5,48 @@ import javax.sql.DataSource;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 public class DataSourceC3P0 implements IDataSourcePool {
-	protected volatile ComboPooledDataSource datasource;
+    protected volatile ComboPooledDataSource datasource;
 
+    public DataSourceC3P0(String connectURI, String driverName) throws Exception {
+	Class.forName(driverName);
+	/*
+	 * http://www.mchange.com/projects/c3p0/index.html#using_c3p0
+	 */
+	datasource = new ComboPooledDataSource(); // create a new datasource
+						  // object
+	datasource.setJdbcUrl(connectURI);
+	// datasource.setConnectionCustomizerClassName("net.idea.modbcum.c.VerboseConnectionCustomizer");
+	datasource.setMaxPoolSize(512);
+	/**
+	 * http://www.mchange.com/projects/c3p0/index.html#
+	 * configuring_connection_testing
+	 * 
+	 * datasource.setAutomaticTestTable("version");
+	 * datasource.setPreferredTestQuery("SELECT 1");
+	 * datasource.setTestConnectionOnCheckin(true);
+	 * datasource.setIdleConnectionTestPeriod(5);
+	 */
+    }
 
-	public DataSourceC3P0(String connectURI, String driverName)  throws Exception {
-        Class.forName(driverName);
-        /*
-http://www.mchange.com/projects/c3p0/index.html#using_c3p0 
-         */
-        datasource = new ComboPooledDataSource();  // create a new datasource object
-     	datasource.setJdbcUrl(connectURI);
-     	//datasource.setConnectionCustomizerClassName("net.idea.modbcum.c.VerboseConnectionCustomizer");
-     	datasource.setMaxPoolSize(512); 
-     	/**
-     	 * http://www.mchange.com/projects/c3p0/index.html#configuring_connection_testing
+    public void close() throws Exception {
 
-        datasource.setAutomaticTestTable("version");
-        datasource.setPreferredTestQuery("SELECT 1");
-        datasource.setTestConnectionOnCheckin(true);
-        datasource.setIdleConnectionTestPeriod(5); 
-     	 */
-	}
-	public void close() throws Exception {
-		
-		if (datasource!= null)	datasource.close();		
+	if (datasource != null)
+	    datasource.close();
+
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+	try {
+	    close();
+	} catch (Exception x) {
 
 	}
-	@Override
-	protected void finalize() throws Throwable {
-		try {
-		close();
-		} catch (Exception x) {
-			
-		}
-		super.finalize();
-	}
-	@Override
-	public DataSource getDatasource() {
-		return datasource;
-	}
+	super.finalize();
+    }
+
+    @Override
+    public DataSource getDatasource() {
+	return datasource;
+    }
 }
-
