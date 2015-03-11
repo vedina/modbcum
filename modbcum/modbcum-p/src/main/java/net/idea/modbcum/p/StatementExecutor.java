@@ -55,6 +55,18 @@ public abstract class StatementExecutor<Q extends IStatement, Results> extends A
 	 */
 
     protected Hashtable<String, PreparedStatement> cache = new Hashtable<String, PreparedStatement>();
+    /**
+	 * 
+	 */
+    protected boolean useCache = false;
+
+    public boolean isUseCache() {
+	return useCache;
+    }
+
+    public void setUseCache(boolean useCache) {
+	this.useCache = useCache;
+    }
 
     /**
 	 * 
