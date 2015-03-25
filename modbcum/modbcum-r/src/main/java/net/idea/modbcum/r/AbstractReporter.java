@@ -14,6 +14,10 @@ import net.idea.modbcum.p.DefaultAmbitProcessor;
 public abstract class AbstractReporter<Content, Output> extends DefaultAmbitProcessor<Content, Output> implements
 	Reporter<Content, Output> {
     /**
+     * 
+     */
+    private static final long serialVersionUID = 4258695772944173854L;
+    /**
 	 * 
 	 */
 
