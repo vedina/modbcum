@@ -23,7 +23,7 @@ public abstract class QueryAbstractReporter<T, Q extends IQueryRetrieval<T>, Out
     protected int maxRecords = 0;
     protected boolean showHeader = true;
     protected boolean showFooter = true;
-    protected boolean autoCommit = true;
+    protected boolean autoCommit = false;
     protected long timeout = 0;
     protected AbstractBatchProcessor batch;
     protected String licenseURI;
