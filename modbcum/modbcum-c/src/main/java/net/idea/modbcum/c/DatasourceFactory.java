@@ -65,7 +65,7 @@ public class DatasourceFactory {
 
 	IDataSourcePool ds = getInstance().datasources.get(connectURI);
 	if (ds == null) {
-	    ds = setupDataSource(connectURI, driverName);
+	    ds = setupDataSource(namedConfig,connectURI, driverName);
 	    IDataSourcePool oldds = getInstance().datasources.putIfAbsent(connectURI, ds);
 	    if (oldds != null)
 		ds = oldds;
@@ -111,11 +111,11 @@ public class DatasourceFactory {
 	}
     }
 
-    public static synchronized IDataSourcePool setupDataSource(String connectURI, String driverName) throws Exception {
+    public static synchronized IDataSourcePool setupDataSource(String namedConfig,String connectURI, String driverName) throws Exception {
 	try {
 	    // IDataSourcePool dataSource = new DataSourceAndPool(connectURI);
 	    // IDataSourcePool dataSource = new DataSourceBoneCP(connectURI);
-	    IDataSourcePool dataSource = new DataSourceC3P0(connectURI, driverName);
+	    IDataSourcePool dataSource = new DataSourceC3P0(namedConfig,connectURI, driverName);
 
 	    return dataSource;
 	} catch (Exception x) {
