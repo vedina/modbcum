@@ -35,6 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
 
+import net.idea.modbcum.i.IDataSourcePool;
 import net.idea.modbcum.i.LoginInfo;
 import net.idea.modbcum.i.exceptions.AmbitException;
 
