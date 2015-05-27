@@ -59,7 +59,7 @@ public class DatasourceFactory {
 	return DatasourceFactoryHolder.instance;
     }
 
-    public static synchronized DataSource getDataSource(String connectURI, String driverName) throws Exception {
+    public static synchronized DataSource getDataSource(String namedConfig,String connectURI, String driverName) throws Exception {
 	if (connectURI == null)
 	    throw new AmbitException("Connection URI not specified!");
 
@@ -98,11 +98,11 @@ public class DatasourceFactory {
 
     }
 
-    public static Connection getConnection(String connectURI, String driverName) throws Exception {
+    public static Connection getConnection(String namedConfig,String connectURI, String driverName) throws Exception {
 	try {
-	    Connection connection = getDataSource(connectURI, driverName).getConnection();
+	    Connection connection = getDataSource(namedConfig,connectURI, driverName).getConnection();
 	    if (connection.isClosed())
-		return getDataSource(connectURI, driverName).getConnection();
+		return getDataSource(namedConfig,connectURI, driverName).getConnection();
 	    else
 		return connection;
 	} catch (Exception x) {
@@ -186,32 +186,4 @@ public class DatasourceFactory {
 	return getConnectionURI("jdbc:mysql", hostname, port, database, null, null);
     }
 
-    public static boolean ping(LoginInfo li) {
-	Connection connection = null;
-	Statement st = null;
-	try {
-	    String dburi = DatasourceFactory.getConnectionURI(li.getScheme(), li.getHostname(), li.getPort(),
-		    li.getDatabase(), li.getUser(), li.getPassword());
-
-	    connection = DatasourceFactory.getConnection(dburi.toString(), li.getDriverClassName());
-	    st = connection.createStatement();
-	    st.execute("/*ping*/SELECT 1");
-	    return true;
-	} catch (Exception x) {
-	    return false;
-	} finally {
-	    if (st != null)
-		try {
-		    st.close();
-		} catch (Exception x) {
-		}
-	    ;
-	    if (connection != null)
-		try {
-		    connection.close();
-		} catch (Exception x) {
-		}
-	    ;
-	}
-    }
 }
