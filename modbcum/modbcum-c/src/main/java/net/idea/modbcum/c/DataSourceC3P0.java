@@ -27,39 +27,20 @@ public class DataSourceC3P0 implements IDataSourcePool {
 	/*
 	 * http://www.mchange.com/projects/c3p0/index.html#using_c3p0
 	 */
-	datasource = new ComboPooledDataSource(namedConfig); // create a new
-							     // datasource
+	if (namedConfig != null)
+	    datasource = new ComboPooledDataSource(namedConfig);
+	else
+	    datasource = new ComboPooledDataSource();
 	// object
 	datasource.setJdbcUrl(connectURI);
 
 	if (verbose)
 	    datasource.setConnectionCustomizerClassName("net.idea.modbcum.c.VerboseConnectionCustomizer");
-
-	if (namedConfig == null) {
-	    datasource.setMaxPoolSize(512);
-
 	    /**
 	     * http://www.mchange.com/projects/c3p0/index.html#
 	     * configuring_connection_testing
-	     * 
-	     * datasource.setAutomaticTestTable("version");
-	     * datasource.setPreferredTestQuery("SELECT 1");
-	     * datasource.setTestConnectionOnCheckin(true);
-	     * datasource.setIdleConnectionTestPeriod(5);
-	     */
-	    datasource.setTestConnectionOnCheckin(true);
-	    // datasource.setIdleConnectionTestPeriod(3000);
-	    datasource.setPreferredTestQuery("/*ping*/ SELECT 1");
-	    // datasource.setMaxIdleTimeExcessConnections(2400); // should be
-	    // less
-	    // than
-	    // setIdleConnectionTestPeriod
-	    /**
-	     * http://www.mchange.com/projects/c3p0/#checkoutTimeout
-	     */
-	    datasource.setCheckoutTimeout(600000);
-	    datasource.setNumHelperThreads(10);
-	}
+	*/
+
     }
 
     public void close() throws Exception {
