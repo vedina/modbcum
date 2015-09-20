@@ -9,7 +9,7 @@ import net.idea.modbcum.i.query.QueryParam;
 import net.idea.modbcum.q.conditions.EQCondition;
 
 public abstract class BucketQuery<V> extends AbstractQuery<Bucket,V,EQCondition,Bucket> implements IQueryRetrieval<Bucket> {
-	protected Bucket placeHolder = new Bucket();
+	protected Bucket bucket = new Bucket();
 	/**
 	 * 
 	 */

@@ -23,13 +23,13 @@ public class SQLFileQuery<V> extends BucketQuery<V> {
 	public SQLFileQuery(File sqlFile) throws IOException {
 		super();
 		sql = loadSQL(sqlFile);
-		placeHolder.setHeader(null);
+		bucket.setHeader(null);
 	}
 
 	public SQLFileQuery(String resourceName) throws IOException {
 		super();
 		sql = loadSQL(resourceName);
-		placeHolder.setHeader(null);
+		bucket.setHeader(null);
 	}
 
 	protected String loadSQL(String resourceName) throws IOException {
@@ -119,86 +119,86 @@ public class SQLFileQuery<V> extends BucketQuery<V> {
 	public Bucket getObject(ResultSet rs) throws AmbitException {
 
 		try {
-			if (placeHolder.getHeader() == null)
-				setHeader(rs, placeHolder);
+			if (bucket.getHeader() == null)
+				setHeader(rs, bucket);
 
-			placeHolder.clear();
-			for (int i = 0; i < placeHolder.getHeader().length; i++) {
-				String key = placeHolder.getHeader()[i];
+			bucket.clear();
+			for (int i = 0; i < bucket.getHeader().length; i++) {
+				String key = bucket.getHeader()[i];
 				if (key.toUpperCase().indexOf("OPS") == 0)
 					key = key.toUpperCase(); // hack
-				int type = placeHolder.getColumnTypes()[i];
+				int type = bucket.getColumnTypes()[i];
 				switch (type) {
 				case java.sql.Types.TINYINT: {
-					placeHolder.put(key, rs.getByte(key));
+					bucket.put(key, rs.getByte(key));
 					break;
 				}
 				case java.sql.Types.SMALLINT: {
-					placeHolder.put(key, rs.getShort(key));
+					bucket.put(key, rs.getShort(key));
 					break;
 				}
 				case java.sql.Types.INTEGER: {
-					placeHolder.put(key, rs.getInt(key));
+					bucket.put(key, rs.getInt(key));
 					break;
 				}
 				case java.sql.Types.BIGINT: {
-					placeHolder.put(key, rs.getLong(key));
+					bucket.put(key, rs.getLong(key));
 					break;
 				}
 				case java.sql.Types.REAL: {
-					placeHolder.put(key, rs.getFloat(key));
+					bucket.put(key, rs.getFloat(key));
 					break;
 				}
 				case java.sql.Types.FLOAT: {
-					placeHolder.put(key, rs.getFloat(key));
+					bucket.put(key, rs.getFloat(key));
 					break;
 				}
 				case java.sql.Types.DOUBLE: {
-					placeHolder.put(key, rs.getDouble(key));
+					bucket.put(key, rs.getDouble(key));
 					break;
 				}
 				case java.sql.Types.DATE: {
-					placeHolder.put(key, rs.getDate(key));
+					bucket.put(key, rs.getDate(key));
 					break;
 				}
 				case java.sql.Types.TIME: {
-					placeHolder.put(key, rs.getTime(key));
+					bucket.put(key, rs.getTime(key));
 					break;
 				}
 				case java.sql.Types.TIMESTAMP: {
-					placeHolder.put(key, rs.getTimestamp(key));
+					bucket.put(key, rs.getTimestamp(key));
 					break;
 				}
 				case java.sql.Types.DECIMAL: {
-					placeHolder.put(key, rs.getBigDecimal(key));
+					bucket.put(key, rs.getBigDecimal(key));
 					break;
 				}
 				case java.sql.Types.CHAR: {
-					placeHolder.put(key, rs.getString(key));
+					bucket.put(key, rs.getString(key));
 					break;
 				}
 				case java.sql.Types.VARCHAR: {
-					placeHolder.put(key, rs.getString(key));
+					bucket.put(key, rs.getString(key));
 					break;
 				}
 				case java.sql.Types.LONGNVARCHAR: {
-					placeHolder.put(key, rs.getString(key));
+					bucket.put(key, rs.getString(key));
 					break;
 				}
 				case java.sql.Types.CLOB: {
-					placeHolder.put(key, rs.getString(key));
+					bucket.put(key, rs.getString(key));
 					break;
 				}
 
 				case java.sql.Types.NUMERIC: {
-					placeHolder.put(key, rs.getDouble(key));
+					bucket.put(key, rs.getDouble(key));
 					break;
 				}
 
 				}
 
 			}
-			return placeHolder;
+			return bucket;
 		} catch (Exception x) {
 			x.printStackTrace();
 			throw new AmbitException(x);
