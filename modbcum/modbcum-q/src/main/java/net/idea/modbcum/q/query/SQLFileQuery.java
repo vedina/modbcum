@@ -100,14 +100,7 @@ public class SQLFileQuery<V> extends BucketQuery<V> {
 		int[] columnTypes = new int[md.getColumnCount()];
 		for (int i = 0; i < md.getColumnCount(); i++) {
 			header[i] = md.getColumnName(i + 1);
-			if (header[i].toUpperCase().indexOf("OPS") == 0)
-				header[i] = header[i].toUpperCase(); // hack
 			columnTypes[i] = md.getColumnType(i + 1);
-			if ((java.sql.Types.NUMERIC == columnTypes[i])
-					&& (header[i].toUpperCase().indexOf("_ID") > 0)) {
-				columnTypes[i] = java.sql.Types.BIGINT;
-			}
-
 			// java.sql.Types
 		}
 		bucket.setColumnTypes(columnTypes);
@@ -125,8 +118,7 @@ public class SQLFileQuery<V> extends BucketQuery<V> {
 			bucket.clear();
 			for (int i = 0; i < bucket.getHeader().length; i++) {
 				String key = bucket.getHeader()[i];
-				if (key.toUpperCase().indexOf("OPS") == 0)
-					key = key.toUpperCase(); // hack
+
 				int type = bucket.getColumnTypes()[i];
 				switch (type) {
 				case java.sql.Types.TINYINT: {
