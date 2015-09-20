@@ -177,6 +177,10 @@ public class SQLFileQuery<V> extends BucketQuery<V> {
 					bucket.put(key, rs.getString(key));
 					break;
 				}
+				case java.sql.Types.LONGVARCHAR: {
+					bucket.put(key, rs.getString(key));
+					break;
+				}
 				case java.sql.Types.CLOB: {
 					bucket.put(key, rs.getString(key));
 					break;
