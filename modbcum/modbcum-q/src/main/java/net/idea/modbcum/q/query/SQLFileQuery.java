@@ -99,7 +99,7 @@ public class SQLFileQuery<V> extends BucketQuery<V> {
 		String[] header = new String[md.getColumnCount()];
 		int[] columnTypes = new int[md.getColumnCount()];
 		for (int i = 0; i < md.getColumnCount(); i++) {
-			header[i] = md.getColumnName(i + 1);
+			header[i] = md.getColumnLabel(i + 1);
 			columnTypes[i] = md.getColumnType(i + 1);
 			// java.sql.Types
 		}
