@@ -48,183 +48,202 @@ import net.idea.modbcum.p.AbstractDBProcessor;
  * @author nina
  * 
  */
-public abstract class AbstractBatchProcessor<Target, ItemInput> extends AbstractDBProcessor<Target, IBatchStatistics>
-	implements IBatchProcessor<Target, ItemInput, IBatchStatistics> {
+public abstract class AbstractBatchProcessor<Target, ItemInput> extends
+		AbstractDBProcessor<Target, IBatchStatistics> implements
+		IBatchProcessor<Target, ItemInput, IBatchStatistics> {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 6221299717393378599L;
-    protected IBatchStatistics batchStatistics = null;
-    public static String PROPERTY_BATCHSTATS = "ambit2.core.processors.batch.IBatchStatistics";
-    protected long now = System.currentTimeMillis(); // ms
-    protected ProcessorsChain<ItemInput, IBatchStatistics, IProcessor> processor;
-    protected long timeout = 0;
-    protected boolean cancelled = false;
+	private static final long serialVersionUID = 6221299717393378599L;
+	protected IBatchStatistics batchStatistics = null;
+	public static String PROPERTY_BATCHSTATS = "ambit2.core.processors.batch.IBatchStatistics";
+	protected long now = System.currentTimeMillis(); // ms
+	protected ProcessorsChain<ItemInput, IBatchStatistics, IProcessor> processor;
+	protected long timeout = 0;
+	protected boolean cancelled = false;
 
-    public long getTimeout() {
-	return timeout;
-    }
-
-    public void setTimeout(long timeout) {
-	this.timeout = timeout;
-    }
-
-    public synchronized void cancel() {
-	this.cancelled = true;
-    }
-
-    public AbstractBatchProcessor() {
-	// TODO Auto-generated constructor stub
-    }
-
-    public AbstractBatchProcessor(ProcessorsChain<ItemInput, IBatchStatistics, IProcessor> processor) {
-	super();
-	setProcessorChain(processor);
-    }
-
-    public ProcessorsChain<ItemInput, IBatchStatistics, IProcessor> getProcessorChain() {
-	return processor;
-    }
-
-    public void setProcessorChain(ProcessorsChain<ItemInput, IBatchStatistics, IProcessor> processor) {
-	this.processor = processor;
-
-    }
-
-    public IBatchStatistics process(Target target) throws Exception {
-	long started = System.currentTimeMillis();
-	beforeProcessing(target);
-	IBatchStatistics result = getResult(target);
-	ProcessorsChain<ItemInput, IBatchStatistics, IProcessor> processor = getProcessorChain();
-	Iterator<ItemInput> i = getIterator(target);
-	logger.log(Level.FINE, "Processing started");
-	cancelled = false;
-	while (i.hasNext() && !cancelled) {
-
-	    ItemInput input = null;
-
-	    try {
-		input = i.next();
-		onItemRead(input, result);
-	    } catch (Exception x) {
-		onError(input, null, result, x);
-		continue;
-	    }
-
-	    try {
-		if (processor != null) {
-		    Object output = processor.process(input);
-		    try {
-			onItemProcessed(input, output, result);
-		    } catch (ClassCastException x) {
-			// weird class cast exception
-			onItemProcessed(null, output, result);
-		    }
-		}
-	    } catch (Exception x) {
-		logger.log(Level.WARNING, x.getMessage(), x);
-		onError(input, null, result, x);
-		continue;
-	    }
-	    long elapsed = System.currentTimeMillis() - started;
-	    if ((timeout > 0) && (elapsed) > timeout) {
-		onError(input, null, result, new AmbitException(String.format("Aborted on timeout %d", elapsed)));
-		break;
-	    }
+	public long getTimeout() {
+		return timeout;
 	}
 
-	afterProcessing(target, i);
-	return result;
-    }
+	public void setTimeout(long timeout) {
+		this.timeout = timeout;
+	}
 
-    public void afterProcessing(Target target, java.util.Iterator<ItemInput> iterator) throws AmbitException {
-	propertyChangeSupport.firePropertyChange(PROPERTY_BATCHSTATS, null, batchStatistics);
-    }
+	public synchronized void cancel() {
+		this.cancelled = true;
+	}
 
-    public void beforeProcessing(Target target) throws AmbitException {
-	now = System.currentTimeMillis();
-	batchStatistics = getResult(target);
+	public AbstractBatchProcessor() {
+		// TODO Auto-generated constructor stub
+	}
 
-    }
+	public AbstractBatchProcessor(
+			ProcessorsChain<ItemInput, IBatchStatistics, IProcessor> processor) {
+		super();
+		setProcessorChain(processor);
+	}
 
-    public IBatchStatistics getResult(Target target) {
-	if (batchStatistics != null)
-	    return batchStatistics;
-	batchStatistics = new DefaultBatchStatistics();
-	batchStatistics.setResultCaption("Read");
-	long freq = 1;
-	((DefaultBatchStatistics) batchStatistics).setFrequency(freq);
-	return batchStatistics;
-    }
+	public ProcessorsChain<ItemInput, IBatchStatistics, IProcessor> getProcessorChain() {
+		return processor;
+	}
 
-    public void onItemProcessing(ItemInput input, Object output, IBatchStatistics stats) {
-	long freq = stats.getFrequency();
-	if ((stats.getRecords(IBatchStatistics.RECORDS_STATS.RECORDS_READ) % freq) == 0)
-	    propertyChangeSupport.firePropertyChange(PROPERTY_BATCHSTATS, null, stats);
+	public void setProcessorChain(
+			ProcessorsChain<ItemInput, IBatchStatistics, IProcessor> processor) {
+		this.processor = processor;
 
-    }
+	}
 
-    @Override
-    public void open() throws Exception {
-	if (getProcessorChain() != null)
-	    for (IProcessor p : getProcessorChain())
-		if (p instanceof IDBProcessor)
-		    try {
-			((IDBProcessor) p).open();
-		    } catch (Exception x) {
-		    }
+	public IBatchStatistics process(Target target) throws Exception {
+		long started = System.currentTimeMillis();
+		beforeProcessing(target);
+		IBatchStatistics result = getResult(target);
+		ProcessorsChain<ItemInput, IBatchStatistics, IProcessor> processor = getProcessorChain();
+		Iterator<ItemInput> i = getIterator(target);
+		logger.log(Level.FINE, "Processing started");
+		cancelled = false;
+		while (i.hasNext() && !cancelled) {
 
-    }
+			ItemInput input = null;
 
-    public void onError(ItemInput input, Object output, IBatchStatistics stats, Exception x) {
-	stats.increment(IBatchStatistics.RECORDS_STATS.RECORDS_ERROR);
-	stats.incrementTimeElapsed(IBatchStatistics.RECORDS_STATS.RECORDS_ERROR, System.currentTimeMillis() - now);
-	now = System.currentTimeMillis();
-    }
-
-    public void onItemProcessed(ItemInput input, Object output, IBatchStatistics stats) {
-	stats.increment(IBatchStatistics.RECORDS_STATS.RECORDS_PROCESSED);
-	stats.incrementTimeElapsed(IBatchStatistics.RECORDS_STATS.RECORDS_PROCESSED, System.currentTimeMillis() - now);
-	if (stats.isTimeToPrint(200))
-	    propertyChangeSupport.firePropertyChange(PROPERTY_BATCHSTATS, null, stats);
-	now = System.currentTimeMillis();
-
-    }
-
-    public void onItemRead(ItemInput input, IBatchStatistics stats) {
-	stats.increment(IBatchStatistics.RECORDS_STATS.RECORDS_READ);
-	stats.incrementTimeElapsed(IBatchStatistics.RECORDS_STATS.RECORDS_READ, System.currentTimeMillis() - now);
-	now = System.currentTimeMillis();
-
-    }
-
-    @Override
-    public void setConnection(Connection connection) throws DbAmbitException {
-	super.setConnection(connection);
-	if (getProcessorChain() != null)
-	    for (IProcessor p : getProcessorChain())
-		if (p instanceof IDBProcessor)
-		    ((IDBProcessor) p).setConnection(connection);
-
-    }
-
-    @Override
-    public void close() throws Exception {
-	if (!closeConnection) {
-	    try {
-		setConnection(null);
-	    } catch (Exception x) {
-	    }
-	} else {
-	    if (processor != null)
-		for (IProcessor p : getProcessorChain())
-		    if (p instanceof IDBProcessor)
 			try {
-			    ((IDBProcessor) p).close();
+				input = i.next();
+				onItemRead(input, result);
+			} catch (Exception x) {
+				onError(input, null, result, x);
+				continue;
+			}
+
+			try {
+				if (processor != null) {
+					Object output = processor.process(input);
+					try {
+						onItemProcessed(input, output, result);
+					} catch (ClassCastException x) {
+						// weird class cast exception
+						onItemProcessed(null, output, result);
+					}
+				}
+			} catch (Exception x) {
+				logger.log(Level.WARNING, x.getMessage(), x);
+				onError(input, null, result, x);
+				continue;
+			}
+			long elapsed = System.currentTimeMillis() - started;
+			if ((timeout > 0) && (elapsed) > timeout) {
+				onError(input,
+						null,
+						result,
+						new AmbitException(String.format(
+								"Aborted on timeout %d", elapsed)));
+				break;
+			}
+		}
+
+		afterProcessing(target, i);
+		return result;
+	}
+
+	public void afterProcessing(Target target,
+			java.util.Iterator<ItemInput> iterator) throws AmbitException {
+		propertyChangeSupport.firePropertyChange(PROPERTY_BATCHSTATS, null,
+				batchStatistics);
+	}
+
+	public void beforeProcessing(Target target) throws AmbitException {
+		now = System.currentTimeMillis();
+		batchStatistics = getResult(target);
+
+	}
+
+	public IBatchStatistics getResult(Target target) {
+		if (batchStatistics != null)
+			return batchStatistics;
+		batchStatistics = new DefaultBatchStatistics();
+		batchStatistics.setResultCaption("Read");
+		long freq = 1;
+		((DefaultBatchStatistics) batchStatistics).setFrequency(freq);
+		return batchStatistics;
+	}
+
+	public void onItemProcessing(ItemInput input, Object output,
+			IBatchStatistics stats) {
+		long freq = stats.getFrequency();
+		if ((stats.getRecords(IBatchStatistics.RECORDS_STATS.RECORDS_READ) % freq) == 0)
+			propertyChangeSupport.firePropertyChange(PROPERTY_BATCHSTATS, null,
+					stats);
+
+	}
+
+	@Override
+	public void open() throws Exception {
+		if (getProcessorChain() != null)
+			for (IProcessor p : getProcessorChain())
+				if (p instanceof IDBProcessor)
+					try {
+						((IDBProcessor) p).open();
+					} catch (Exception x) {
+					}
+
+	}
+
+	public void onError(ItemInput input, Object output, IBatchStatistics stats,
+			Exception x) {
+		stats.increment(IBatchStatistics.RECORDS_STATS.RECORDS_ERROR);
+		stats.incrementTimeElapsed(
+				IBatchStatistics.RECORDS_STATS.RECORDS_ERROR,
+				System.currentTimeMillis() - now);
+		now = System.currentTimeMillis();
+	}
+
+	public void onItemProcessed(ItemInput input, Object output,
+			IBatchStatistics stats) {
+		stats.increment(IBatchStatistics.RECORDS_STATS.RECORDS_PROCESSED);
+		stats.incrementTimeElapsed(
+				IBatchStatistics.RECORDS_STATS.RECORDS_PROCESSED,
+				System.currentTimeMillis() - now);
+		if (stats.isTimeToPrint(200))
+			propertyChangeSupport.firePropertyChange(PROPERTY_BATCHSTATS, null,
+					stats);
+		now = System.currentTimeMillis();
+
+	}
+
+	public void onItemRead(ItemInput input, IBatchStatistics stats) {
+		stats.increment(IBatchStatistics.RECORDS_STATS.RECORDS_READ);
+		stats.incrementTimeElapsed(IBatchStatistics.RECORDS_STATS.RECORDS_READ,
+				System.currentTimeMillis() - now);
+		now = System.currentTimeMillis();
+
+	}
+
+	@Override
+	public void setConnection(Connection connection) throws DbAmbitException {
+		super.setConnection(connection);
+		if (getProcessorChain() != null)
+			for (IProcessor p : getProcessorChain())
+				if (p instanceof IDBProcessor)
+					((IDBProcessor) p).setConnection(connection);
+
+	}
+
+	@Override
+	public void close() throws Exception {
+		if (!closeConnection) {
+			try {
+				setConnection(null);
 			} catch (Exception x) {
 			}
-	    super.close();
+		} else {
+			if (processor != null)
+				for (IProcessor p : getProcessorChain())
+					if (p instanceof IDBProcessor)
+						try {
+							((IDBProcessor) p).close();
+						} catch (Exception x) {
+						}
+			super.close();
+		}
 	}
-    }
 }
