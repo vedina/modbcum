@@ -120,7 +120,9 @@ public class SQLFileQuery<V> extends BucketQuery<V> {
 				String key = bucket.getHeader()[i];
 
 				int type = bucket.getColumnTypes()[i];
+				if (type== java.sql.Types.JAVA_OBJECT) continue;
 				
+				if (rs.getString(key) == null) continue;
 				switch (type) {
 				case java.sql.Types.TINYINT: {
 					bucket.put(key, rs.getByte(key));
