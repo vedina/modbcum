@@ -120,6 +120,7 @@ public class SQLFileQuery<V> extends BucketQuery<V> {
 				String key = bucket.getHeader()[i];
 
 				int type = bucket.getColumnTypes()[i];
+				
 				switch (type) {
 				case java.sql.Types.TINYINT: {
 					bucket.put(key, rs.getByte(key));
@@ -190,13 +191,14 @@ public class SQLFileQuery<V> extends BucketQuery<V> {
 					bucket.put(key, rs.getDouble(key));
 					break;
 				}
-
+				case java.sql.Types.JAVA_OBJECT: {
+					break;
+				}
 				}
 
 			}
 			return bucket;
 		} catch (Exception x) {
-			x.printStackTrace();
 			throw new AmbitException(x);
 		}
 	}
