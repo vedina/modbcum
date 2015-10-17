@@ -12,7 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Bucket<V> implements Serializable, Map<String, V> {
+import net.idea.modbcum.i.JSONSerializable;
+import net.idea.modbcum.i.json.JSONUtils;
+
+public class Bucket<V> implements Serializable, Map<String, V> , JSONSerializable {
 	/**
 	 * 
 	 */
@@ -165,5 +168,55 @@ public class Bucket<V> implements Serializable, Map<String, V> {
 				this.header[l] = field;
 				l++;
 			}
+	}
+	@Override
+	public String asJSON() {
+		StringBuilder writer = new StringBuilder();
+		writer.append("\n\t{\n");
+		boolean first = true;
+		if (getHeader() != null)
+			for (int i = 0; i < getHeader().length; i++) {
+				String header = getHeader()[i];
+				Object o = get(header);
+
+				if (o == null)
+					continue;
+				if (!first)
+					writer.append(",\n");
+				first = false;
+				writer.append("\t");
+				writer.append(JSONUtils.jsonQuote(JSONUtils.jsonEscape(header)));
+				writer.append(":");
+
+				if (o instanceof String)
+					writer.append(JSONUtils.jsonQuote(JSONUtils.jsonEscape(o
+							.toString())));
+				else if (o instanceof Date) {
+					writer.append(JSONUtils.jsonQuote(sdf.format((Date) o)));
+				} else if (o instanceof Timestamp) {
+					writer.append(JSONUtils.jsonQuote(sdf.format((Timestamp) o)));
+				} else if (o instanceof Number)
+					writer.append(o.toString());
+				else if (o instanceof JSONSerializable) {
+					writer.append(((JSONSerializable) o).asJSON());
+				} else if (o instanceof List) {
+					writer.append("[\n");
+					String comma = "";
+					for (Object result : (List) o) {
+						writer.append(comma);
+						if (result instanceof JSONSerializable)
+							writer.append(((JSONSerializable) result).asJSON());
+						else
+							writer.append(JSONUtils.jsonQuote(JSONUtils
+									.jsonEscape(result.toString())));
+						comma = ",\n";
+					}
+					writer.append("\n]\n");
+				} else
+					writer.append(JSONUtils.jsonQuote(JSONUtils.jsonEscape(o
+							.toString())));
+			}
+		writer.append("\n\t}");
+		return writer.toString();
 	}
 }
