@@ -30,7 +30,13 @@ public interface IBatchStatistics extends Serializable {
 	    public String toString() {
 		return "error";
 	    }
-	}
+	},
+	RECORDS_SKIPPED {
+	    @Override
+	    public String toString() {
+		return "skipped";
+	    }
+	}	
     };
 
     /**

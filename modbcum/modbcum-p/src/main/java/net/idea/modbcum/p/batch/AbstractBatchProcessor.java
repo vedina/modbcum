@@ -110,6 +110,10 @@ public abstract class AbstractBatchProcessor<Target, ItemInput> extends
 			try {
 				input = i.next();
 				onItemRead(input, result);
+				if (skip(input,result)) {
+					onItemSkipped(input, result);
+					continue;
+				}
 			} catch (Exception x) {
 				onError(input, null, result, x);
 				continue;
@@ -210,6 +214,19 @@ public abstract class AbstractBatchProcessor<Target, ItemInput> extends
 
 	}
 
+	public boolean skip(ItemInput input, IBatchStatistics stats) {
+		return false;
+	}
+	
+	public void onItemSkipped(ItemInput input, 	IBatchStatistics stats) {
+		stats.increment(IBatchStatistics.RECORDS_STATS.RECORDS_SKIPPED);
+		stats.incrementTimeElapsed(
+				IBatchStatistics.RECORDS_STATS.RECORDS_SKIPPED,
+				System.currentTimeMillis() - now);
+		now = System.currentTimeMillis();
+
+	}
+	
 	public void onItemRead(ItemInput input, IBatchStatistics stats) {
 		stats.increment(IBatchStatistics.RECORDS_STATS.RECORDS_READ);
 		stats.incrementTimeElapsed(IBatchStatistics.RECORDS_STATS.RECORDS_READ,
