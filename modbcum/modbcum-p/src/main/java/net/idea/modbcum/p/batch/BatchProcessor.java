@@ -152,4 +152,8 @@ public abstract class BatchProcessor<INPUT, Target> extends DefaultAmbitProcesso
     public void open() throws Exception {
 
     }
+    
+    public long getSilentInterval() {
+		return 500;
+	}
 }

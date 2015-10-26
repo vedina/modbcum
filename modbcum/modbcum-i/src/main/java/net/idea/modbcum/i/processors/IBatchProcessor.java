@@ -27,5 +27,7 @@ public interface IBatchProcessor<Target, ItemInput, Result> {
 
     void setTimeout(long timeout);
 
+    long getSilentInterval();
+    
     void cancel();
 }

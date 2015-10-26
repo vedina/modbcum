@@ -198,6 +198,9 @@ public abstract class AbstractBatchProcessor<Target, ItemInput> extends
 		stats.incrementTimeElapsed(
 				IBatchStatistics.RECORDS_STATS.RECORDS_ERROR,
 				System.currentTimeMillis() - now);
+		if (stats.isTimeToPrint(getSilentInterval()))
+			propertyChangeSupport.firePropertyChange(PROPERTY_BATCHSTATS, null,
+					stats);		
 		now = System.currentTimeMillis();
 	}
 
@@ -207,13 +210,16 @@ public abstract class AbstractBatchProcessor<Target, ItemInput> extends
 		stats.incrementTimeElapsed(
 				IBatchStatistics.RECORDS_STATS.RECORDS_PROCESSED,
 				System.currentTimeMillis() - now);
-		if (stats.isTimeToPrint(200))
+		if (stats.isTimeToPrint(getSilentInterval()))
 			propertyChangeSupport.firePropertyChange(PROPERTY_BATCHSTATS, null,
 					stats);
 		now = System.currentTimeMillis();
 
 	}
 
+	public long getSilentInterval() {
+		return 500;
+	}
 	public boolean skip(ItemInput input, IBatchStatistics stats) {
 		return false;
 	}
