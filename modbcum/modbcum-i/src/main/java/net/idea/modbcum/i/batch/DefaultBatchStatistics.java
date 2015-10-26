@@ -120,21 +120,24 @@ public class DefaultBatchStatistics extends Observable implements
 	}
 
 	public String toString() {
-		long t = getTimeElapsed();
-
+		long t = 0;
 		StringBuilder b = new StringBuilder();
 		b.append("Records ");
 		for (RECORDS_STATS stats : RECORDS_STATS.values()) {
 			long records = getRecords(stats);
+			t+= time_elapsed[stats.ordinal()];
 			b.append(stats.toString());
 			b.append(":");
 			b.append(Long.toString(records));
 			if (records > 0) {
 				b.append(' ');
 				double s = ((double) time_elapsed[stats.ordinal()]) / ((double) records);
-				b.append(String.format(" [%s msec, %-10.3f msec/record]\t", time_elapsed[stats.ordinal()],s));
+				b.append(String.format(" [%-10.3f msec/record]\t", s));
 			} else b.append('\t');
 		}
+		b.append("Total time ");
+		b.append(t);
+		b.append(" msec.");
 		/*
 		 * if (getRecords(RECORDS_STATS.RECORDS_READ) > 0) { double s =
 		 * ((double) t) / ((double) getRecords(RECORDS_STATS.RECORDS_READ));

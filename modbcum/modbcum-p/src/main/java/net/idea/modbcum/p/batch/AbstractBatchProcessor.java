@@ -210,7 +210,7 @@ public abstract class AbstractBatchProcessor<Target, ItemInput> extends
 		stats.incrementTimeElapsed(
 				IBatchStatistics.RECORDS_STATS.RECORDS_PROCESSED,
 				System.currentTimeMillis() - now);
-		if (stats.isTimeToPrint(getSilentInterval()))
+		if (stats.getRecords(IBatchStatistics.RECORDS_STATS.RECORDS_PROCESSED)==1 || stats.isTimeToPrint(getSilentInterval()))
 			propertyChangeSupport.firePropertyChange(PROPERTY_BATCHSTATS, null,
 					stats);
 		now = System.currentTimeMillis();
