@@ -119,7 +119,7 @@ public class DbReader<ResultType> extends AbstractBatchProcessor<IQueryRetrieval
     }
 
     public QueryExecutor createQueryExecutor() {
-	return new QueryExecutor<IQueryObject<ResultType>>();
+	return new QueryExecutor<IQueryObject<ResultType>>(true);
     }
 
     @Override
