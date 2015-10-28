@@ -29,7 +29,6 @@ import java.util.logging.Level;
 
 import net.idea.modbcum.i.IDBProcessor;
 import net.idea.modbcum.i.exceptions.DbAmbitException;
-import net.idea.modbcum.l.AmbitLogger;
 
 public abstract class AbstractDBProcessor<Target, Result> extends DefaultAmbitProcessor<Target, Result> implements
 	IDBProcessor<Target, Result>

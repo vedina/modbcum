@@ -96,7 +96,9 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
 		<module>modbcum-r</module>
 		<module>modbcum-q</module>
 		<module>modbcum-c</module>
+		<!-- 
 		<module>modbcum-l</module>
+		 -->
 		<module>modbcum-e</module>
 	</modules>
 	<distributionManagement>
