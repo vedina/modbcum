@@ -17,7 +17,7 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
 	<url>https://github.com/vedina/modbcum</url>
 	<properties>
 		<junit.version>4.8.1</junit.version>
-		<dbunit.version>2.4.9</dbunit.version>
+		<dbunit.version>2.5.1</dbunit.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<issueManagement>
