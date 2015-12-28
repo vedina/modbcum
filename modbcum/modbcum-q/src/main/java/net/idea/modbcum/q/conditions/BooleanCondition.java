@@ -35,90 +35,79 @@ import java.util.Map;
 import net.idea.modbcum.i.IQueryCondition;
 
 public class BooleanCondition implements IQueryCondition {
-    /**
-	 * 
-	 */
-    private static final long serialVersionUID = -6044842080559767779L;
-    private static Map<String, BooleanCondition> instances = null;
+	private static Map<String,BooleanCondition> instances = null;
+	
+	public enum BOOLEAN_CONDITION {
+		B_YES {
+			@Override
+			public String toString() {
+				return "Yes";
+			}
+			@Override
+			public String getSQL() {
+				return "true";
+			}
+		},
+		B_NO {
+			@Override
+			public String toString() {
+				return "No";
+			}
+			@Override
+			public String getSQL() {
+				return "false";
+			}
+		};
 
-    public enum BOOLEAN_CONDITION {
-	B_YES {
-	    @Override
-	    public String toString() {
-		return "Yes";
-	    }
-
-	    @Override
-	    public String getSQL() {
-		return "true";
-	    }
-	},
-	B_NO {
-	    @Override
-	    public String toString() {
-		return "No";
-	    }
-
-	    @Override
-	    public String getSQL() {
-		return "false";
-	    }
-	};
-
-	public String getName() {
-	    return toString();
+		public String getName() {
+			return toString();
+		}
+		public abstract String getSQL();
+		public String getParam(String value) {
+			return value;
+		}
 	}
 
-	public abstract String getSQL();
-
+	protected BOOLEAN_CONDITION value;
+	
+	protected BooleanCondition(BOOLEAN_CONDITION value) {
+		this.value = value;
+	}	
 	public String getParam(String value) {
-	    return value;
+		return this.value.getParam(value);
 	}
-    }
-
-    protected BOOLEAN_CONDITION value;
-
-    protected BooleanCondition(BOOLEAN_CONDITION value) {
-	this.value = value;
-    }
-
-    public String getParam(String value) {
-	return this.value.getParam(value);
-    }
-
-    public String getName() {
-	return value.toString();
-    }
-
-    public String getSQL() {
-	return value.getSQL();
-    }
-
-    public static Map<String, BooleanCondition> getAlowedValues() {
-	if (instances == null) {
-	    Map<String, BooleanCondition> list = new Hashtable<String, BooleanCondition>();
-	    for (BOOLEAN_CONDITION c : BOOLEAN_CONDITION.values())
-		list.put(c.getName(), new BooleanCondition(c));
-	    instances = list;
+	public String getName() {
+		return value.toString();
 	}
-	return instances;
-    }
 
-    public static BooleanCondition getInstance(String condition) {
-	try {
-	    BooleanCondition c = getAlowedValues().get(condition);
-	    if (c != null)
-		return c;
-	} catch (Exception x) {
+	public String getSQL() {
+		return value.getSQL();
+	}
+
+	public static Map<String,BooleanCondition> getAlowedValues() {
+		if (instances == null) {
+			Map<String,BooleanCondition> list = new Hashtable<String,BooleanCondition>();
+			for (BOOLEAN_CONDITION c : BOOLEAN_CONDITION.values())
+				list.put(c.getName(),new BooleanCondition(c));
+			instances = list;
+		}
+		return instances;
+	}
+
+	public static BooleanCondition getInstance(String condition) {
+		try {
+			BooleanCondition c = getAlowedValues().get(condition);
+			if (c != null) return c;
+		} catch (Exception x) {
 	    x.printStackTrace();
+			
 
+		}
+		return getAlowedValues().get(BOOLEAN_CONDITION.B_YES.toString());
 	}
-	return getAlowedValues().get(BOOLEAN_CONDITION.B_YES.toString());
-    }
-
-    @Override
-    public String toString() {
-	return getSQL();
-    }
+	@Override
+	public String toString() {
+		return getSQL();
+	}
 
 }

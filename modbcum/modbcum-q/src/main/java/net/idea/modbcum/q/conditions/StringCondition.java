@@ -8,8 +8,8 @@ import net.idea.modbcum.i.IQueryCondition;
 //todo refactor with enums
 public class StringCondition implements IQueryCondition {
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = -517113006900728995L;
     private static Map<String, StringCondition> instances = null;
     public static final String C_EQ = "=";
@@ -140,7 +140,7 @@ public class StringCondition implements IQueryCondition {
 
     protected STRING_CONDITION value;
 
-    protected StringCondition(STRING_CONDITION value) {
+    public StringCondition(STRING_CONDITION value) {
 	this.value = value;
     }
 
