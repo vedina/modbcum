@@ -196,6 +196,13 @@ public class SQLFileQuery<V> extends BucketQuery<V> {
 				case java.sql.Types.JAVA_OBJECT: {
 					break;
 				}
+				case java.sql.Types.VARBINARY : {
+					bucket.put(key, rs.getString(key));
+					break;
+				}
+				default: {
+					//System.out.println(type);
+				}
 				}
 
 			}
