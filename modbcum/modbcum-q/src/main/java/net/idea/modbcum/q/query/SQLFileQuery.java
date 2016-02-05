@@ -200,6 +200,11 @@ public class SQLFileQuery<V> extends BucketQuery<V> {
 					bucket.put(key, rs.getString(key));
 					break;
 				}
+				case java.sql.Types.LONGVARBINARY : {
+					bucket.put(key, rs.getString(key));
+					break;
+				}
+				
 				default: {
 					//System.out.println(type);
 				}
