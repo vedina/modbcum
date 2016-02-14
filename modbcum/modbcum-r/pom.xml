@@ -4,7 +4,7 @@
   <parent>
     <artifactId>modbcum</artifactId>
     <groupId>net.idea</groupId>
-    <version>1.0.8-SNAPSHOT</version>
+    <version>1.0.8</version>
   </parent>
   <artifactId>modbcum-r</artifactId>
   <name>modbcum reporters</name>
