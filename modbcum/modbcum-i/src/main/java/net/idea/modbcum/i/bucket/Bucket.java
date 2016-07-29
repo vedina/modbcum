@@ -182,7 +182,7 @@ public class Bucket<V> implements Serializable, Map<String, V> , JSONSerializabl
 				if (o == null)
 					continue;
 				if (!first)
-					writer.append(",\n");
+					writer.append(",");
 				first = false;
 				writer.append("\t");
 				writer.append(JSONUtils.jsonQuote(JSONUtils.jsonEscape(header)));
@@ -200,7 +200,7 @@ public class Bucket<V> implements Serializable, Map<String, V> , JSONSerializabl
 				else if (o instanceof JSONSerializable) {
 					writer.append(((JSONSerializable) o).asJSON());
 				} else if (o instanceof List) {
-					writer.append("[\n");
+					writer.append("[");
 					String comma = "";
 					for (Object result : (List) o) {
 						writer.append(comma);
@@ -209,9 +209,9 @@ public class Bucket<V> implements Serializable, Map<String, V> , JSONSerializabl
 						else
 							writer.append(JSONUtils.jsonQuote(JSONUtils
 									.jsonEscape(result.toString())));
-						comma = ",\n";
+						comma = ",";
 					}
-					writer.append("\n]\n");
+					writer.append("]\n");
 				} else
 					writer.append(JSONUtils.jsonQuote(JSONUtils.jsonEscape(o
 							.toString())));
