@@ -172,7 +172,7 @@ public class Bucket<V> implements Serializable, Map<String, V> , JSONSerializabl
 	@Override
 	public String asJSON() {
 		StringBuilder writer = new StringBuilder();
-		writer.append("\n\t{\n");
+		writer.append("\n\t{");
 		boolean first = true;
 		if (getHeader() != null)
 			for (int i = 0; i < getHeader().length; i++) {
@@ -216,7 +216,7 @@ public class Bucket<V> implements Serializable, Map<String, V> , JSONSerializabl
 					writer.append(JSONUtils.jsonQuote(JSONUtils.jsonEscape(o
 							.toString())));
 			}
-		writer.append("\n\t}");
+		writer.append("}");
 		return writer.toString();
 	}
 }
