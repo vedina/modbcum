@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.idea</groupId>
   <artifactId>modbcum</artifactId>
-  <version>1.0.9</version>
+  <version>1.0.10-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>modbcum</name>
   <description>Light streaming DB access.
@@ -12,7 +12,7 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
     <connection>scm:git:git://github.com/vedina/modbcum.git</connection>
     <developerConnection>scm:git:git@github.com:vedina/modbcum.git</developerConnection>
     <url>https://vedina.@github.com/vedina/modbcum</url>
-    <tag>modbcum-1.0.9</tag>
+    <tag>HEAD</tag>
   </scm>
   <url>https://github.com/vedina/modbcum</url>
   <properties>
