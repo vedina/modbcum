@@ -9,4 +9,4 @@ http://en.wikipedia.org/wiki/Hibernation:
 "Hibernation is a state of inactivity and metabolic depression in animals, characterized by lower body temperature, slower breathing, and lower metabolic rate"
 
 Download from Maven repository
-http://ambit.uni-plovdiv.bg:8083/nexus/index.html#nexus-search;gav~~modbcum*
+https://nexus.ideaconsult.net/#nexus-search;quick~modbcum
