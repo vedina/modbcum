@@ -15,7 +15,7 @@ import java.util.Set;
 import net.idea.modbcum.i.JSONSerializable;
 import net.idea.modbcum.i.json.JSONUtils;
 
-public class Bucket<V> implements Serializable, Map<String, V> , JSONSerializable {
+public class Bucket<V> implements Serializable, Map<String, V>, JSONSerializable {
 	/**
 	 * 
 	 */
@@ -56,8 +56,9 @@ public class Bucket<V> implements Serializable, Map<String, V> , JSONSerializabl
 			if (map.get(header[i]) == null)
 				continue;
 			String c = "";
-			if (map.get(header[i]) instanceof String)
+			if (map.get(header[i]) instanceof String) {
 				c = "\"";
+			}
 			writer.write(c);
 			Object o = map.get(header[i]);
 			if (o instanceof Date) {
@@ -67,7 +68,7 @@ public class Bucket<V> implements Serializable, Map<String, V> , JSONSerializabl
 			} else if (o instanceof List) {
 				continue;
 			} else
-				writer.write(o.toString());
+				writer.write(o.toString().replace(delimiter, " ").replaceAll("\"", "'"));
 			writer.write(c);
 		}
 		writer.flush();
@@ -169,6 +170,7 @@ public class Bucket<V> implements Serializable, Map<String, V> , JSONSerializabl
 				l++;
 			}
 	}
+
 	@Override
 	public String asJSON() {
 		StringBuilder writer = new StringBuilder();
@@ -189,8 +191,7 @@ public class Bucket<V> implements Serializable, Map<String, V> , JSONSerializabl
 				writer.append(":");
 
 				if (o instanceof String)
-					writer.append(JSONUtils.jsonQuote(JSONUtils.jsonEscape(o
-							.toString())));
+					writer.append(JSONUtils.jsonQuote(JSONUtils.jsonEscape(o.toString())));
 				else if (o instanceof Date) {
 					writer.append(JSONUtils.jsonQuote(sdf.format((Date) o)));
 				} else if (o instanceof Timestamp) {
@@ -207,14 +208,12 @@ public class Bucket<V> implements Serializable, Map<String, V> , JSONSerializabl
 						if (result instanceof JSONSerializable)
 							writer.append(((JSONSerializable) result).asJSON());
 						else
-							writer.append(JSONUtils.jsonQuote(JSONUtils
-									.jsonEscape(result.toString())));
+							writer.append(JSONUtils.jsonQuote(JSONUtils.jsonEscape(result.toString())));
 						comma = ",";
 					}
 					writer.append("]\n");
 				} else
-					writer.append(JSONUtils.jsonQuote(JSONUtils.jsonEscape(o
-							.toString())));
+					writer.append(JSONUtils.jsonQuote(JSONUtils.jsonEscape(o.toString())));
 			}
 		writer.append("}");
 		return writer.toString();
