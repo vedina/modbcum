@@ -22,6 +22,7 @@ public class ConfigProperties {
 
 	public File getConfigOverrideDir(String override_var) {
 		try {
+			if (override_var.startsWith("${")) return null;
 			String path = System.getenv(override_var);
 			if (path != null) {
 				File dir = new File(path);
