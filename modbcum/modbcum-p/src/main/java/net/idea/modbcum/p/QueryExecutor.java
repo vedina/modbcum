@@ -144,8 +144,10 @@ public class QueryExecutor<Q extends IQueryObject> extends StatementExecutor<Q, 
 
     public String getSQL(Q target) throws AmbitException {
 	String sql = target.getSQL();
-	if (sql.indexOf(LIMIT) >= 0)
+	if (sql.indexOf(LIMIT) >= 0) 
 	    return sql;
+	if (sql.indexOf("call") >= 0)
+	    return sql;	
 
 	int page = target.getPage();
 	long psize = target.getPageSize();
