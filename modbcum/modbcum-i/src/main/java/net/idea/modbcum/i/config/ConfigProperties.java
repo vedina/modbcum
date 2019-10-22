@@ -53,6 +53,8 @@ public class ConfigProperties {
 				Properties defaults = new Properties();
 				try (InputStream in = this.getClass().getClassLoader().getResourceAsStream(config)) {
 					defaults.load(in);
+				} catch (Exception x) {
+					//can't load defaults
 				}
 				if (getConfigOverrideVar() !=null && defaults.get(getConfigOverrideVar()) != null) {
 					File dir = getConfigOverrideDir(defaults.get(getConfigOverrideVar()).toString());

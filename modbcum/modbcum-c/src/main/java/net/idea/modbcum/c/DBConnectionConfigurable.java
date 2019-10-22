@@ -1,5 +1,6 @@
 package net.idea.modbcum.c;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,7 +40,20 @@ public class DBConnectionConfigurable<CONTEXT> {
 		this.configFile = configFile;
 		loginInfo = getLoginInfo(context);
 	}
-
+	public DBConnectionConfigurable(CONTEXT context, File configFile) {
+		super();
+		File override = configFile;
+		if (override.isDirectory()) {
+			override = configFile;
+			this.configFile="ambit.properties";
+		} else { 
+			this.configFile=configFile.getName();
+			override = configFile.getParentFile();
+		}	
+		properties = new ConfigProperties(override);
+		
+		loginInfo = getLoginInfo(context);
+	}
 	/**
 	 * 
 	 * @return

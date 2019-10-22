@@ -1,5 +1,6 @@
 package net.idea.modbcum.c;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,7 +13,9 @@ public class MySQLSingleConnection<CONTEXT> extends
 	public MySQLSingleConnection(CONTEXT context, String configFile) {
 		super(context, configFile);
 	}
-
+	public MySQLSingleConnection(CONTEXT context, File configFile) {
+		super(context, configFile);
+	}
 	public synchronized Connection getConnection(String connectionURI)
 			throws AmbitException, SQLException {
 		DriverManager.registerDriver(new com.mysql.jdbc.Driver());
