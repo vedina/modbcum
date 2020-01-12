@@ -23,155 +23,156 @@ import net.idea.modbcum.i.query.QueryParam;
  */
 public class QueryExecutor<Q extends IQueryObject> extends StatementExecutor<Q, ResultSet> {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 5821244671560506456L;
-    protected PreparedStatement sresults = null;
-    protected Statement statement = null;
-    protected boolean isCached;
-    // protected String limit = "%s limit %d";
-    protected String paged_limit = "%s limit %d,%d";
-    protected String LIMIT = "limit";
+	private static final long serialVersionUID = 5821244671560506456L;
+	protected PreparedStatement sresults = null;
+	protected Statement statement = null;
+	protected boolean isCached;
+	// protected String limit = "%s limit %d";
+	protected String paged_limit = "%s limit %d,%d";
+	protected String LIMIT = "limit";
 
-    public QueryExecutor() {
-	this(false);
-    }
+	public QueryExecutor() {
+		this(false);
+	}
 
-    public QueryExecutor(boolean cacheStatements) {
-	setCache(cacheStatements);
-    }
+	public QueryExecutor(boolean cacheStatements) {
+		setCache(cacheStatements);
+	}
 
-    public boolean isCache() {
-	return isCached;
-    }
+	public boolean isCache() {
+		return isCached;
+	}
 
-    public void setCache(boolean cache) {
-	this.isCached = cache;
-    }
+	public void setCache(boolean cache) {
+		this.isCached = cache;
+	}
 
-    // ResultSet.TYPE_FORWARD_ONLY, ResultSet.TYPE_SCROLL_INSENSITIVE
-    protected int resultType = ResultSet.TYPE_SCROLL_INSENSITIVE;
+	// ResultSet.TYPE_FORWARD_ONLY, ResultSet.TYPE_SCROLL_INSENSITIVE
+	protected int resultType = ResultSet.TYPE_SCROLL_INSENSITIVE;
 
-    public int getResultType() {
-	return resultType;
-    }
+	public int getResultType() {
+		return resultType;
+	}
 
-    public void setResultType(int resultType) {
-	this.resultType = resultType;
-    }
+	public void setResultType(int resultType) {
+		this.resultType = resultType;
+	}
 
-    public int getResultTypeConcurency() {
-	return resultTypeConcurency;
-    }
+	public int getResultTypeConcurency() {
+		return resultTypeConcurency;
+	}
 
-    public void setResultTypeConcurency(int resultTypeConcurency) {
-	this.resultTypeConcurency = resultTypeConcurency;
-    }
+	public void setResultTypeConcurency(int resultTypeConcurency) {
+		this.resultTypeConcurency = resultTypeConcurency;
+	}
 
-    // one of ResultSet.CONCUR_READ_ONLY or ResultSet.CONCUR_UPDATABLE
-    protected int resultTypeConcurency = ResultSet.CONCUR_READ_ONLY;
+	// one of ResultSet.CONCUR_READ_ONLY or ResultSet.CONCUR_UPDATABLE
+	protected int resultTypeConcurency = ResultSet.CONCUR_READ_ONLY;
 
-    public void open() throws DbAmbitException {
-    }
+	public void open() throws DbAmbitException {
+	}
 
-    public synchronized ResultSet process(Q target) throws Exception {
+	public synchronized ResultSet process(Q target) throws Exception {
 
-	long now = System.currentTimeMillis();
-	Connection c = getConnection();
-	if (c == null)
-	    throw new AmbitException("no connection");
+		long now = System.currentTimeMillis();
+		Connection c = getConnection();
+		if (c == null)
+			throw new AmbitException("no connection");
 
-	ResultSet rs = null;
-	try {
-	    List<QueryParam> params = target.getParameters();
-	    if (params == null) {
-		statement = c.createStatement(getResultType(), getResultTypeConcurency());
+		ResultSet rs = null;
+		try {
+			List<QueryParam> params = target.getParameters();
+			if (params == null) {
+				statement = c.createStatement(getResultType(), getResultTypeConcurency());
+				String sql = getSQL(target);
+
+				rs = statement.executeQuery(sql);
+
+			} else {
+				String sql = getSQL(target);
+				sresults = getCachedStatement(sql);
+
+				if (sresults == null) {
+					sresults = c.prepareStatement(sql, getResultType(), getResultTypeConcurency());
+					if (sresults==null) throw new Exception("Preparestatement failed");
+					if (isCache())
+						addStatementToCache(sql, sresults);
+				} else {
+					sresults.clearParameters();
+				}
+
+				QueryExecutor.setParameters(sresults, params);
+				logger.log(Level.FINE, sresults.toString());
+				sresults.setFetchDirection(ResultSet.FETCH_FORWARD);
+				sresults.setFetchSize(Integer.MIN_VALUE);
+				rs = sresults.executeQuery();
+
+			}
+		} catch (Exception x) {
+			try {
+				logger.log(Level.SEVERE, String.format("%s", x.getMessage()));
+			} catch (Exception xx) {
+			}
+			throw new ProcessorException(this, x);
+		} catch (Throwable x) {
+			throw new ProcessorException(this, x.getMessage());
+		} finally {
+			// System.out.println(System.currentTimeMillis()-now + "\t"+
+			// (sresults==null?statement:sresults));
+		}
+		return rs;
+	}
+
+	@Override
+	protected synchronized ResultSet execute(Connection c, Q target) throws SQLException, AmbitException {
 		String sql = getSQL(target);
-
-		rs = statement.executeQuery(sql);
-
-	    } else {
-		String sql = getSQL(target);
-		sresults = getCachedStatement(sql);
-
-		if (sresults == null) {
-		    sresults = c.prepareStatement(sql, getResultType(), getResultTypeConcurency());
-		    if (isCache())
-			addStatementToCache(sql, sresults);
+		List<QueryParam> params = target.getParameters();
+		if (params == null) {
+			statement = c.createStatement();
+			ResultSet rs = statement.executeQuery(sql);
+			return rs;
 		} else {
-		    sresults.clearParameters();
+			sresults = c.prepareStatement(sql);
+			setParameters(sresults, params);
+			logger.log(Level.FINEST, sresults.toString());
+			ResultSet rs = sresults.executeQuery();
+			return rs;
+		}
+	}
+
+	public String getSQL(Q target) throws AmbitException {
+		String sql = target.getSQL();
+		if (sql.indexOf(LIMIT) >= 0)
+			return sql;
+		if (sql.indexOf("call") >= 0)
+			return sql;
+
+		int page = target.getPage();
+		long psize = target.getPageSize();
+
+		if ((target instanceof IQueryRetrieval) && !((IQueryRetrieval) target).supportsPaging()) {
+			page = 0;
+			psize = (psize * 100) > 10000 ? 10000 : (psize * 100);
 		}
 
-		QueryExecutor.setParameters(sresults, params);
-		logger.log(Level.FINE, sresults.toString());
-		sresults.setFetchDirection(ResultSet.FETCH_FORWARD);
-		sresults.setFetchSize(Integer.MIN_VALUE);
-		rs = sresults.executeQuery();
-
-	    }
-	} catch (Exception x) {
-	    try {
-		System.err.println(x.getMessage() + " " + sresults);
-	    } catch (Exception xx) {
-	    }
-	    throw new ProcessorException(this, x);
-	} catch (Throwable x) {
-	    throw new ProcessorException(this, x.getMessage());
-	} finally {
-	    // System.out.println(System.currentTimeMillis()-now + "\t"+
-	    // (sresults==null?statement:sresults));
-	}
-	return rs;
-    }
-
-    @Override
-    protected synchronized ResultSet execute(Connection c, Q target) throws SQLException, AmbitException {
-	String sql = getSQL(target);
-	List<QueryParam> params = target.getParameters();
-	if (params == null) {
-	    statement = c.createStatement();
-	    ResultSet rs = statement.executeQuery(sql);
-	    return rs;
-	} else {
-	    sresults = c.prepareStatement(sql);
-	    setParameters(sresults, params);
-	    logger.log(Level.FINEST, sresults.toString());
-	    ResultSet rs = sresults.executeQuery();
-	    return rs;
-	}
-    }
-
-    public String getSQL(Q target) throws AmbitException {
-	String sql = target.getSQL();
-	if (sql.indexOf(LIMIT) >= 0) 
-	    return sql;
-	if (sql.indexOf("call") >= 0)
-	    return sql;	
-
-	int page = target.getPage();
-	long psize = target.getPageSize();
-
-	if ((target instanceof IQueryRetrieval) && !((IQueryRetrieval) target).supportsPaging()) {
-	    page = 0;
-	    psize = (psize * 100) > 10000 ? 10000 : (psize * 100);
+		return (target.getPageSize() > 0 ? String.format(paged_limit, sql, page == 0 ? 0 : page * psize, psize) : sql);
 	}
 
-	return (target.getPageSize() > 0 ? String.format(paged_limit, sql, page == 0 ? 0 : page * psize, psize) : sql);
-    }
-
-    @Override
-    public void closeResults(ResultSet rs) throws SQLException {
-	if (rs != null)
-	    rs.close();
-	if (sresults != null) {
-	    if (!isCache())
-		sresults.close();
-	    sresults = null;
+	@Override
+	public void closeResults(ResultSet rs) throws SQLException {
+		if (rs != null)
+			rs.close();
+		if (sresults != null) {
+			if (!isCache())
+				sresults.close();
+			sresults = null;
+		}
+		if (statement != null)
+			statement.close();
+		statement = null;
 	}
-	if (statement != null)
-	    statement.close();
-	statement = null;
-    }
 
 }

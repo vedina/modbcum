@@ -30,56 +30,56 @@ import java.util.logging.Level;
 import net.idea.modbcum.i.IDBProcessor;
 import net.idea.modbcum.i.exceptions.DbAmbitException;
 
-public abstract class AbstractDBProcessor<Target, Result> extends DefaultAmbitProcessor<Target, Result> implements
-	IDBProcessor<Target, Result>
-/* , IRepositoryAccess */{
-    /**
+public abstract class AbstractDBProcessor<Target, Result> extends DefaultAmbitProcessor<Target, Result>
+		implements IDBProcessor<Target, Result>
+/* , IRepositoryAccess */ {
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 735962863075840837L;
-    // protected SessionID sessionID = null;
-    protected Connection connection;
-    protected boolean closeConnection = true;
+	private static final long serialVersionUID = 735962863075840837L;
+	// protected SessionID sessionID = null;
+	protected Connection connection;
+	protected boolean closeConnection = true;
 
-    public boolean isCloseConnection() {
-	return closeConnection;
-    }
+	public boolean isCloseConnection() {
+		return closeConnection;
+	}
 
-    public void setCloseConnection(boolean closeConnection) {
-	this.closeConnection = closeConnection;
-    }
+	public void setCloseConnection(boolean closeConnection) {
+		this.closeConnection = closeConnection;
+	}
 
-    public boolean isEnabled() {
-	return enabled;
-    }
+	public boolean isEnabled() {
+		return enabled;
+	}
 
-    public AbstractDBProcessor() {
-	super();
-    }
+	public AbstractDBProcessor() {
+		super();
+	}
 
-    public Connection getConnection() {
-	return connection;
-    }
+	public Connection getConnection() {
+		return connection;
+	}
 
-    public void setConnection(Connection connection) throws DbAmbitException {
-	if ((this.connection != null) && (this.connection != connection) && isCloseConnection())
-	    try {
-		close();
-	    } catch (Exception x) {
-		logger.log(Level.SEVERE, x.getMessage(), x);
-	    }
-	this.connection = connection;
-    }
+	public void setConnection(Connection connection) throws DbAmbitException {
+		if ((this.connection != null) && (this.connection != connection) && isCloseConnection())
+			try {
+				close();
+			} catch (Exception x) {
+				logger.log(Level.SEVERE, x.getMessage(), x);
+			}
+		this.connection = connection;
+	}
 
-    @Override
-    public void close() throws Exception {
-	if ((connection != null) && (!connection.isClosed()) && isCloseConnection())
-	    connection.close();
-	connection = null;
-    }
+	@Override
+	public void close() throws Exception {
+		if ((connection != null) && (!connection.isClosed()) && isCloseConnection())
+			connection.close();
+		connection = null;
+	}
 
-    /*
-     * public SessionID getSession() { return sessionID; } public void
-     * setSession(SessionID sessionID) { this.sessionID = sessionID; }
-     */
+	/*
+	 * public SessionID getSession() { return sessionID; } public void
+	 * setSession(SessionID sessionID) { this.sessionID = sessionID; }
+	 */
 }
