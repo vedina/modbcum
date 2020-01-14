@@ -29,7 +29,7 @@ public class QueryExecutor<Q extends IQueryObject> extends StatementExecutor<Q, 
 	private static final long serialVersionUID = 5821244671560506456L;
 	protected PreparedStatement sresults = null;
 	protected Statement statement = null;
-	protected boolean isCached;
+	
 	// protected String limit = "%s limit %d";
 	protected String paged_limit = "%s limit %d,%d";
 	protected String LIMIT = "limit";
@@ -43,11 +43,11 @@ public class QueryExecutor<Q extends IQueryObject> extends StatementExecutor<Q, 
 	}
 
 	public boolean isCache() {
-		return isCached;
+		return super.isUseCache();
 	}
 
 	public void setCache(boolean cache) {
-		this.isCached = cache;
+		super.setUseCache(cache);
 	}
 
 	// ResultSet.TYPE_FORWARD_ONLY, ResultSet.TYPE_SCROLL_INSENSITIVE
