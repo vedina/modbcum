@@ -129,7 +129,8 @@ public class UpdateExecutor<Q extends IQueryUpdate> extends StatementExecutor<Q,
 		// try { statement.close();} catch (Exception x) {} finally
 		// {statement = null;}
 		// else
-		addStatementToCache(sql[i], statement);
+	    	if (isUseCache())
+	    		addStatementToCache(sql[i], statement);
 	    }
 	}
 	return count;
