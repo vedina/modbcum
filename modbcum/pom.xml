@@ -19,6 +19,7 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
     <junit.version>4.8.1</junit.version>
     <dbunit.version>2.6.0</dbunit.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <sourceVersion>1.8</sourceVersion>
   </properties>
   <issueManagement>
     <system>GitHub</system>
@@ -180,33 +181,7 @@ Code extracted from ambit:ambit-db module  http://ambit.sourceforge.net</descrip
         </plugins>
       </build>
     </profile>
-    <profile>
-      <id>JRE6</id>
-      <activation>
-        <jdk>1.6</jdk>
-      </activation>
-      <properties>
-        <sourceVersion>1.6</sourceVersion>
-      </properties>
-    </profile>
-    <profile>
-      <id>JRE7</id>
-      <activation>
-        <jdk>1.7</jdk>
-      </activation>
-      <properties>
-        <sourceVersion>1.7</sourceVersion>
-      </properties>
-    </profile>
-    <profile>
-      <id>JRE8</id>
-      <activation>
-        <jdk>1.8</jdk>
-      </activation>
-      <properties>
-        <sourceVersion>1.8</sourceVersion>
-      </properties>
-    </profile>
+   
     <profile>
       <id>production</id>
       <build>
